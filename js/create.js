@@ -33,14 +33,19 @@
 			DB.createGame(function(day) {
 				GAME.day = day;
 				stage.removeAllChildren();
-				gameState = GAME;				
+				gameState = GAME;		
+
+				var tempCalIntake = 2000;
+				//Begin Day Add
 				circle = new createjs.Shape();
-				circle.graphics.beginFill("red").drawCircle(0, 100, 100);
+				circle.graphics.beginFill("red").drawCircle(100, 100, 25);
 				circle.x = circle.y = 50;
 				circle.addEventListener("click", function(event) {
-					MAIN.init();
+					DB.createDay(tempCalIntake);
 				});
-				stage.addChild(circle);				
+				stage.addChild(circle);	
+				//End Day Add
+				
 				var text = new createjs.Text("GAME");
 				text.x = 20;
 				text.y = 20;
