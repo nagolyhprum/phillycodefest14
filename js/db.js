@@ -10,7 +10,7 @@ var DB = window.DB || {};
 				weight:w,
 				gender:g,
 				age: a
-			}
+			},
 			type: "POST",
 			success:function(data){
 			
@@ -27,7 +27,7 @@ var DB = window.DB || {};
 				userid: u,
 				gameid: g,
 				caloricintake: c
-			}
+			},
 			success:function(data){
 			
 			}
@@ -41,7 +41,7 @@ var DB = window.DB || {};
 			type: "POST",
 			data:{
 				userid: u
-			}
+			},
 			success:function(data){
 			
 			}

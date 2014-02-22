@@ -1,27 +1,26 @@
-var GAME = window.GAME || {};
+var CONTROL = window.CONTROL || {};
 
 (function() {
-	//Initializes Game Components
-	GAME.gameInit = function(){
-		gameObject = new Object();
-		gameObject.board = [[8], [8], [8], [8], [8], [8], [8], [8]];
-		return gameObject;
+	//Initializes CONTROL Components
+	CONTROL.init = function(){
+		return {
+			board : []
+		};
 	};
 	
 	//Populates Board
-	GAME.populateBoard = function(gameObject){
-		
+	CONTROL.populateBoard = function(board){
 	
 	};
 	
 	//returns the BMI
-	GAME.getCalculateBMI = function(height, weight){
+	CONTROL.getCalculateBMI = function(height, weight){
 		return ((weight/(height*height))*703);
 	};
 	
 	//calculates caloric intake
 	//requires weight in kg and height in cm
-	GAME.getCaloricIntake = function(height, weight, gender, age){
+	CONTROL.getCaloricIntake = function(height, weight, gender, age){
 		if(gender){
 			return (66+(13.7*weight) + (5* height) - (6.8*age));
 		}
@@ -31,13 +30,13 @@ var GAME = window.GAME || {};
 	};
 	
 	// converts pounds to kg
-	GAME.lbtokg = function(weight){
+	CONTROL.lbtokg = function(weight){
 		return (weight/2.2046);
 	};
 	
 	
 	//converts inches to cm
-	GAME.intocm = function(height){
+	CONTROL.intocm = function(height){
 		return (height/.39370);
 	}
 	

@@ -1,13 +1,58 @@
 (function(){
-	//Create a stage by getting a reference to the canvas
-    stage = new createjs.Stage("demoCanvas");
-    //Create a Shape DisplayObject.
-    circle = new createjs.Shape();
-    circle.graphics.beginFill("red").drawCircle(0, 0, 40);
-    //Set position of Shape instance.
-    circle.x = circle.y = 50;
-    //Add Shape instance to stage display list.
-    stage.addChild(circle);
-    //Update stage will render next frame
-    stage.update();
+	var MAIN = window.MAIN || {};
+	
+	(function(){
+		MAIN.init = function(){
+			stage.clear();
+			gameState = MAIN;
+			var text = new Text("MAIN");
+			text.x = 20;
+			text.y = 20;
+			stage.addChild(text);
+		};
+		
+		MAIN.update = function(){
+		
+		};
+		
+		MAIN.click = function(){
+			gameState = GAME;
+		};
+	}());
+	
+	var GAME = window.GAME || {};
+	
+	(function(){
+		GAME.init = function(){
+			stage.clear();
+			gameState = GAME;
+			var text = new Text("GAME");
+			text.x = 20;
+			text.y = 20;
+			stage.addChild(text);
+		};
+		
+		GAME.update = function(){
+			
+		};
+		
+		GAME.click = function(){
+			gameState = MAIN;
+		};
+	}());
+	
+	var gameState;
+    var stage = new createjs.Stage("stage");
+	MAIN.init();
+	createjs.Ticker.addEventListener("tick", function(){
+		gameState.update();
+		stage.update();
+	});
+	
+	stage.addEventListener("click", function(event) {
+		gameState.click();
+	});
+	
+	
 }());
+
