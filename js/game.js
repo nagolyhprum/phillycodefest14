@@ -9,9 +9,9 @@ var CONTROL = window.CONTROL || {};
 	};
 	
 	//GET THE FOOD GROUPS
-	var groups;	
-	DB.getFoodGroups(function(g) {
-		groups = g;
+	var foods;	
+	DB.getFoods(function(f) {
+		foods = f;
 	});
 	
 	//LOGIN
@@ -26,7 +26,8 @@ var CONTROL = window.CONTROL || {};
 	});
 	
 	//Populates Board
-	CONTROL.reset = function(board){
+	CONTROL.reset = function(game){
+		
 	};
 	
 	//returns the BMI

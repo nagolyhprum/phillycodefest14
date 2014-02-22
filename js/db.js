@@ -46,13 +46,13 @@ var DB = window.DB || {};
 	};
 	
 	//creates game in DB
-	DB.getFoodGroups = function(complete){
+	DB.getFoods = function(complete){
 		$.ajax({
-			url: "php/getFoodGroups.php",
+			url: "php/getFoods.php",
 			type: "POST",
-			dataTye : "json",
-			success : function(groups) {
-				complete(groups);
+			dataType : "json",
+			success : function(foods) {
+				complete(foods);
 			}
 		});
 	};
