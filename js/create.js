@@ -30,18 +30,25 @@
 	(function(){
 		GAME.day = -1;
 		GAME.init = function(){
+			GAME.calories = 0;
+			GAME.grains = 0;
+			GAME.protien = 0;
+			GAME.vegtables = 0;
+			GAME.fruit = 0;
+			GAME.junk = 0;
+			GAME.dairy = 0;
+			
 			DB.createGame(function(day) {
 				GAME.day = day;
 				stage.removeAllChildren();
 				gameState = GAME;		
 
-				var tempCalIntake = 2000;
 				//Begin Day Add
 				circle = new createjs.Shape();
 				circle.graphics.beginFill("red").drawCircle(100, 100, 25);
 				circle.x = circle.y = 50;
 				circle.addEventListener("click", function(event) {
-					DB.createDay(tempCalIntake);
+					DB.createDay(GAME.calories, GAME.grains, GAME.protien, GAME.vegtables, GAME.fruit, GAME.junk, GAME.dairy);
 				});
 				stage.addChild(circle);	
 				//End Day Add

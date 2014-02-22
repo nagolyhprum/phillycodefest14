@@ -1,6 +1,11 @@
 <?php
 	require_once("establish.php");
-	$caloricintake = $_POST["caloricintake"];
+	$calories = $_POST["calories"];
+	$grains = $_POST["grains"];
+	$protien = $_POST["protein"];
+	$dairy = $_POST["dairy"];
+	$fruit = $_POST["fruit"];
+	$vegtables = $_POST["vegetables"];
 	
 	$sql = "SELECT MAX(gameid), totalweek FROM gametbl WHERE userid = (?)";
 	$stmt = mysqli_prepare($conn,$sql);
@@ -19,11 +24,13 @@
 	mysqli_stmt_close($stmt);
 	
 	if($gameid && ($currentDay < (7*$week)){
-		$sql("INSERT INTO `daytbl` (`gameid`, `caloricintake`) VALUES (?,?)");
+		$sql("INSERT INTO `daytbl` (`gameid`, `calories`, `grains`, `protein`, `$dairy`, `fruit`, `vegetables`) VALUES (?,?,?,?,?,?,?)");
 		$stmt = mysqli_prepare($conn,$sql);
-		mysqli_stmt_bind_param($stmt, 'ii', $gameid, $caloricintake);
+		mysqli_stmt_bind_param($stmt, 'iiiiiii', $gameid, $caloricintake, $grains, $protein, $dairy, $fruit, $vegtables);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_close($stmt);
 	}
+	echo json_encode($day === $week*7);
+
 	
 	require_once("disconect.php");
