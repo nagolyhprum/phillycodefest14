@@ -20,7 +20,7 @@ var DB = window.DB || {};
 	}
 	
 	//creates a day in DB
-	DB.createDay = function(calories, grains, protien, vegtables, fruit, junk, dairy){
+	DB.createDay = function(calories, grains, protein, vegtables, fruit, junk, dairy){
 		$.ajax({
 			url: "php/createday.php",
 			type: "POST",

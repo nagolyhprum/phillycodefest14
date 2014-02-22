@@ -33,4 +33,4 @@
 	echo json_encode($day === $week*7);
 
 	
-	require_once("disconect.php");
+	require_once("disconnect.php");
