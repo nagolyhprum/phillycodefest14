@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "fixed the create game php"
+git commit -m "can create daily intake"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->

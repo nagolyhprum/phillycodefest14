@@ -19,8 +19,6 @@
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_fetch($stmt);
 	mysqli_stmt_close($stmt);
-	
-	echo "$daysPlayed, $gameweeks, $gameid";
 		
 	if($daysPlayed >= $gameweeks || !$gameid) {
 		$sql = "INSERT INTO `gametbl` (`userid`, `gameweeks`) VALUES (?, ?)";
