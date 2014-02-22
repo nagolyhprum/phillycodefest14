@@ -3,12 +3,19 @@
 	
 	(function(){
 		MAIN.init = function(){
-			stage.clear();
+			stage.removeAllChildren();
 			gameState = MAIN;
-			var text = new createjs.Text("MAIN");
-			text.addEventListener("click", function(event) {
-				GAME.init;
+			
+			circle = new createjs.Shape();
+			circle.graphics.beginFill("blue").drawCircle(0, 100, 100);
+			circle.x = circle.y = 50;
+			circle.addEventListener("click", function(event) {
+				gameState.click();
+				gameState.init();
 			});
+			stage.addChild(circle);
+			
+			var text = new createjs.Text("MAIN");
 			text.x = 20;
 			text.y = 20;
 			stage.addChild(text);
@@ -27,12 +34,19 @@
 	
 	(function(){
 		GAME.init = function(){
-			stage.clear();
+			stage.removeAllChildren();
 			gameState = GAME;
-			var text = new createjs.Text("GAME");
-			text.addEventListener("click", function(event) {
-				MAIN.init;
+			
+			circle = new createjs.Shape();
+			circle.graphics.beginFill("red").drawCircle(0, 100, 100);
+			circle.x = circle.y = 50;
+			circle.addEventListener("click", function(event) {
+				gameState.click();
+				gameState.init();
 			});
+			stage.addChild(circle);
+			
+			var text = new createjs.Text("GAME");
 			text.x = 20;
 			text.y = 20;
 			stage.addChild(text);
@@ -50,15 +64,10 @@
 	var gameState;
     var stage = new createjs.Stage("stage");
 	MAIN.init();
+	
 	createjs.Ticker.addEventListener("tick", function(){
 		gameState.update();
 		stage.update();
 	});
-	
-	stage.addEventListener("click", function(event) {
-		gameState.click();
-	});
-	
-	
 }());
 
