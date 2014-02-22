@@ -22,7 +22,7 @@
 	
 	
 	
-	if($daysPlayed >= $totalweek){
+	if($daysPlayed >= $totalweek || !$gameid){
 		$sql = "INSERT INTO `gametbl` (`userid`, `gameweeks`) VALUES (?)";
 		$stmt = mysqli_prepare($conn, $sql);
 		mysqli_stmt_bind_param($stmt, 'i', $userid);
