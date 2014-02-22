@@ -2,30 +2,29 @@ var DB = window.DB || {};
 
 (function() {
 	//Creates a user in DB
-	DB.createUser = function(h, w, g, a){
+	DB.createUser = function(h, w, g, a, success){
 		$.ajax({
-			url: "createuser.php",
-			data: {
-				height:h,
-				weight:w,
-				gender:g,
-				age: a
+			url : "php/createuser.php",
+			dataType : "json",
+			data : {
+				height : h,
+				weight : w,
+				gender : g,
+				age : a
 			},
-			type: "POST",
-			success:function(data){
-			
+			type : "POST",
+			success : function(bool){
+				success(bool);
 			}
 		});
 	}
 	
 	//creates a day in DB
-	DB.createDay = function(g, c){
+	DB.createDay = function(c){
 		$.ajax({
-			url: "createday.php",
+			url: "php/createday.php",
 			type: "POST",
 			data:{
-				userid: u,
-				gameid: g,
 				caloricintake: c
 			},
 			success:function(data){
@@ -37,13 +36,23 @@ var DB = window.DB || {};
 	//creates game in DB
 	DB.createGame = function(){
 		$.ajax({
-			url: "creategame.php",
+			url: "php/creategame.php",
 			type: "POST",
-			data:{
-				userid: u
-			},
-			success:function(data){
+			dataTye : "json",
+			success:function(currentDay){
 			
+			}
+		});
+	};
+	
+	//creates game in DB
+	DB.getFoodGroups = function(complete){
+		$.ajax({
+			url: "php/getFoodGroups.php",
+			type: "POST",
+			dataTye : "json",
+			success : function(groups) {
+				complete(groups);
 			}
 		});
 	};

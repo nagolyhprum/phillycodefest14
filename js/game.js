@@ -8,9 +8,25 @@ var CONTROL = window.CONTROL || {};
 		};
 	};
 	
-	//Populates Board
-	CONTROL.populateBoard = function(board){
+	//GET THE FOOD GROUPS
+	var groups;	
+	DB.getFoodGroups(function(g) {
+		groups = g;
+	});
 	
+	//LOGIN
+	DB.createUser(10, 20, 30, 40, function(bool) {
+		if(bool[0] === true) {
+			alert("Thank you for creating your new account.");
+		} else if(bool[0] === false) {
+			alert("Thank you for reusing your account.");
+		} else if(bool[0] === null){			
+			alert("Uh oh, could not create an account.");
+		}
+	});
+	
+	//Populates Board
+	CONTROL.reset = function(board){
 	};
 	
 	//returns the BMI
