@@ -8,6 +8,12 @@ CREATE TABLE IF NOT EXISTS `daytbl` (
   `dayid` int(11) NOT NULL AUTO_INCREMENT,
   `gameid` int(11) NOT NULL,
   `daycalories` int(5) NOT NULL,
+  `daygrain` int(4) NOT NULL,
+  `dayprotein` int(4) NOT NULL,
+  `dayjunk` int(4) NOT NULL,
+  `dayvegetables` int(4) NOT NULL,
+  `dayfruit` int(4) NOT NULL,
+  `daydairy` int(4) NOT NULL,
   PRIMARY KEY (`dayid`)
 );
 
