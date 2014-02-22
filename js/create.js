@@ -149,9 +149,5 @@
 		gameState.update();
 		stage.update();
 	});
-	
-	stage.addEventListener("click", function(event) {
-		gameState.click();
-	});
 }());
 
