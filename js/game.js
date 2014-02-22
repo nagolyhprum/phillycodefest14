@@ -8,9 +8,14 @@ var CONTROL = window.CONTROL || {};
 		};
 	};
 	
-	//Populates Board
-	CONTROL.populateBoard = function(board){
+	var groups;
 	
+	DB.getFoodGroups(function(g) {
+		groups = g;
+	});
+	
+	//Populates Board
+	CONTROL.reset = function(board){
 	};
 	
 	//returns the BMI

@@ -58,7 +58,5 @@
 	stage.addEventListener("click", function(event) {
 		gameState.click();
 	});
-	
-	
 }());
 
