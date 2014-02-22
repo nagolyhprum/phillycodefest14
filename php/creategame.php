@@ -19,12 +19,15 @@
 	
 	
 	
-	if($userid){
+	if($daysPlayed >= $totalweek){
 		$sql = "INSERT INTO `gametbl` (`userid`) VALUES (?)";
 		$stmt = mysqli_prepare($conn,$sql);
 		mysqli_stmt_bind_param($stmt, 'i', $userid);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_close($stmt);
+	}
+	else if {
+		echo json_encode($totalweek);
 	}
 	
 	require_once("disconect.php");
