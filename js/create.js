@@ -28,22 +28,25 @@
 	var GAME = window.GAME || {};
 	
 	(function(){
+		GAME.day = -1;
 		GAME.init = function(){
-			stage.removeAllChildren();
-			gameState = GAME;
-			
-			circle = new createjs.Shape();
-			circle.graphics.beginFill("red").drawCircle(0, 100, 100);
-			circle.x = circle.y = 50;
-			circle.addEventListener("click", function(event) {
-				MAIN.init();
+			DB.createGame(function(day) {
+				GAME.day = day;
+				stage.removeAllChildren();
+				gameState = GAME;				
+				circle = new createjs.Shape();
+				circle.graphics.beginFill("red").drawCircle(0, 100, 100);
+				circle.x = circle.y = 50;
+				circle.addEventListener("click", function(event) {
+					MAIN.init();
+				});
+				stage.addChild(circle);				
+				var text = new createjs.Text("GAME");
+				text.x = 20;
+				text.y = 20;
+				stage.addChild(text);
+				//add clickable that ends the day and submits random results
 			});
-			stage.addChild(circle);
-			
-			var text = new createjs.Text("GAME");
-			text.x = 20;
-			text.y = 20;
-			stage.addChild(text);
 		};
 		
 		GAME.update = function(){

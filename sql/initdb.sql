@@ -57,6 +57,7 @@ INSERT INTO `foodtbl` (`foodgroupid`, `foodname`, `foodimage`, `foodcalories`) V
 CREATE TABLE IF NOT EXISTS `gametbl` (
   `gameid` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
+  `gameweeks` int(11) NOT NULL,
   PRIMARY KEY (`gameid`)
 );
 

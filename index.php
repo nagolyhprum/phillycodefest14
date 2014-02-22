@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "Food groups are now gotten"
+git commit -m "sql updated"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->
