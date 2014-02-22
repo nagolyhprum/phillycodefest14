@@ -34,5 +34,5 @@
 		echo json_encode($daysPlayed+1);
 	}
 	
-	require_once("disconect.php");
+	require_once("disconnect.php");
 ?>
