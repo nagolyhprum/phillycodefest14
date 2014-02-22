@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 22, 2014 at 08:04 AM
+-- Generation Time: Feb 22, 2014 at 12:58 PM
 -- Server version: 5.5.35-MariaDB
 -- PHP Version: 5.3.17
 
@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `daytbl` (
 CREATE TABLE IF NOT EXISTS `foodgrouptbl` (
   `groupid` int(11) NOT NULL AUTO_INCREMENT,
   `groupname` varchar(32) NOT NULL,
+  `symbol` varchar(1) NOT NULL,
   PRIMARY KEY (`groupid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
@@ -50,13 +51,13 @@ CREATE TABLE IF NOT EXISTS `foodgrouptbl` (
 -- Dumping data for table `foodgrouptbl`
 --
 
-INSERT INTO `foodgrouptbl` (`groupid`, `groupname`) VALUES
-(1, 'Fruits'),
-(2, 'Vegtables'),
-(3, 'Grains'),
-(4, 'Milk'),
-(5, 'Meat & Beans'),
-(6, 'Fats & Oils');
+INSERT INTO `foodgrouptbl` (`groupid`, `groupname`, `symbol`) VALUES
+(1, 'Fruits', 'f'),
+(2, 'Vegtables', 'v'),
+(3, 'Grains', 'g'),
+(4, 'Milk', 'd'),
+(5, 'Meat & Beans', 'm'),
+(6, 'Fats & Oils', 'o');
 
 -- --------------------------------------------------------
 
@@ -94,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `usertbl` (
   `height` int(2) NOT NULL,
   `weight` int(3) NOT NULL,
   `gender` int(1) NOT NULL,
+  `age` int(3) NOT NULL,
   PRIMARY KEY (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
