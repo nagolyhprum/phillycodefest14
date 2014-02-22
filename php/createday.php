@@ -1,5 +1,5 @@
 <?php
-	require_once(establish.php)
+	require_once("establish.php");
 	$userid = $_SESSION["id"];
 	$gameid = $_POST["gameid"];
 	$caloricintake = $_POST["caloricintake"];
@@ -12,5 +12,4 @@
 		mysqli_stmt_close($stmt);
 	}
 	
-	require_once(disconect.php)
-?>
+	require_once("disconect.php");

@@ -1,5 +1,5 @@
 <?php
-	require_once(establish.php)
+	require_once("establish.php");
 
 	$sql("SELECT symbol FROM foodgrouptbl");
 	$stmt = mysqli_prepare($conn,$sql);
@@ -9,5 +9,5 @@
 	mysqli_stmt_fetch($stmt);
 
 	
-	require_once(disconect.php)
+	require_once("disconect.php");
 ?>

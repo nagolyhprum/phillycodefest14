@@ -1,5 +1,5 @@
 <?php
-	require_once(establish.php)
+	require_once("establish.php");
 	$userid = $_SESSION["id"];
 	
 	if(isset($userid)){
@@ -10,5 +10,5 @@
 		mysqli_stmt_close($stmt);
 	}
 	
-	require_once(disconect.php)
+	require_once("disconect.php");
 ?>
