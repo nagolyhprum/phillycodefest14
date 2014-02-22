@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "sql updated"
+git commit -m "fixed the create game php"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->
