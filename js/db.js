@@ -34,19 +34,22 @@ var DB = window.DB || {};
 	};
 	
 	//creates game in DB
-	DB.createGame = function(){
+	DB.createGame = function(w, success){
 		$.ajax({
 			url: "php/creategame.php",
 			type: "POST",
 			dataTye : "json",
+			data : {
+				weeks : w
+			},
 			success:function(currentDay){
-			
+				success(currentDay);
 			}
 		});
 	};
 	
 	//creates game in DB
-	DB.getFoods = function(complete){
+	DB.getFoods = function(complete) {
 		$.ajax({
 			url: "php/getFoods.php",
 			type: "POST",
