@@ -69,12 +69,9 @@
 		gameState.update();
 		stage.update();
 	});
-<<<<<<< HEAD
 	
 	stage.addEventListener("click", function(event) {
 		gameState.click();
 	});
-=======
->>>>>>> f551b43569c221e223ca48cfe453d1063198d5d4
 }());
 

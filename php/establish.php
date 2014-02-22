@@ -3,4 +3,5 @@
 	$conn = mysqli_connect("localhost", "root", "", "phillycodefest14");
 	session_start();
 	$userid = $_SESSION["id"];
+	$fbid = 1;
 ?>

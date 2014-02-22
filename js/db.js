@@ -2,18 +2,19 @@ var DB = window.DB || {};
 
 (function() {
 	//Creates a user in DB
-	DB.createUser = function(h, w, g, a){
+	DB.createUser = function(h, w, g, a, success){
 		$.ajax({
-			url: "php/createuser.php",
-			data: {
-				height:h,
-				weight:w,
-				gender:g,
-				age: a
+			url : "php/createuser.php",
+			dataType : "json",
+			data : {
+				height : h,
+				weight : w,
+				gender : g,
+				age : a
 			},
-			type: "POST",
-			success:function(data){
-			
+			type : "POST",
+			success : function(bool){
+				success(bool);
 			}
 		});
 	}

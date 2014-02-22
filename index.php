@@ -1,9 +1,8 @@
 <!--
-	git add -A
-	git commit -m "MESSAGE"
-	git push https://github.com/nagolyhprum/phillycodefest14.git
-		
-	git pull https://github.com/nagolyhprum/phillycodefest14.git
+git add -A
+git commit -m "Users are now created or reloaded"
+git pull https://github.com/nagolyhprum/phillycodefest14.git
+git push https://github.com/nagolyhprum/phillycodefest14.git
 -->
 <!doctype html>
 <html>
