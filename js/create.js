@@ -5,7 +5,10 @@
 		MAIN.init = function(){
 			stage.clear();
 			gameState = MAIN;
-			var text = new Text("MAIN");
+			var text = new createjs.Text("MAIN");
+			text.addEventListener("click", function(event) {
+				GAME.init;
+			});
 			text.x = 20;
 			text.y = 20;
 			stage.addChild(text);
@@ -26,7 +29,10 @@
 		GAME.init = function(){
 			stage.clear();
 			gameState = GAME;
-			var text = new Text("GAME");
+			var text = new createjs.Text("GAME");
+			text.addEventListener("click", function(event) {
+				MAIN.init;
+			});
 			text.x = 20;
 			text.y = 20;
 			stage.addChild(text);
