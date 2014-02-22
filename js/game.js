@@ -1,6 +1,6 @@
 var GAME = window.GAME || {};
 
-(Function() {
+(function() {
 	//Initializes Game Components
 	GAME.gameInit = function(){
 		gameObject = new Object();

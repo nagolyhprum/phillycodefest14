@@ -1,6 +1,4 @@
-var CREATE = window.CREATE || {};
-
-(Function(){
+(function(){
 	//Create a stage by getting a reference to the canvas
     stage = new createjs.Stage("demoCanvas");
     //Create a Shape DisplayObject.
@@ -12,4 +10,4 @@ var CREATE = window.CREATE || {};
     stage.addChild(circle);
     //Update stage will render next frame
     stage.update();
-};
+}());

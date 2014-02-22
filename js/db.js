@@ -1,6 +1,6 @@
 var DB = window.DB || {};
 
-(Function() {
+(function() {
 	//Creates a user in DB
 	DB.createUser = function(h, w, g, a){
 		$.ajax({
