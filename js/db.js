@@ -1,8 +1,8 @@
-<script src="jquery.js"></script>
-<script>
+var DB = window.DB || {};
 
+(Function() {
 	//Creates a user in DB
-	function createUser(h, w, g, a){
+	DB.createUser = function(h, w, g, a){
 		$.ajax({
 			url: "createuser.php",
 			data: {
@@ -19,7 +19,7 @@
 	}
 	
 	//creates a day in DB
-	function createDay(g, c){
+	DB.createDay = function(g, c){
 		$.ajax({
 			url: "createday.php",
 			type: "POST",
@@ -32,10 +32,10 @@
 			
 			}
 		});
-	}
+	};
 	
 	//creates game in DB
-	function createGame(){
+	DB.createGame = function(){
 		$.ajax({
 			url: "creategame.php",
 			type: "POST",
@@ -46,6 +46,5 @@
 			
 			}
 		});
-	}
-	
-</script>
+	};
+}());
