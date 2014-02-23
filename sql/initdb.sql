@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `gametbl` (
 CREATE TABLE IF NOT EXISTS `usertbl` (
   `userid` int(11) NOT NULL AUTO_INCREMENT,
   `userheight` int(2) NOT NULL,
-  `userweight` int(3) NOT NULL,
+  `userweight` int(3) NOT bNULL,
   `usergender` int(1) NOT NULL,
   `userage` int(3) NOT NULL,
   `userfbid` int(11) NOT NULL,
@@ -182,4 +182,5 @@ VALUES
 	(205455, 666, 250),
 	(100566, 666, 360),
 	(205687, 666, 200),
-	(201916, 666, 308),
+	(201916, 666, 308);
+	
