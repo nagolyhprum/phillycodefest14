@@ -16,17 +16,17 @@
 			stage.removeAllChildren();
 			gameState = MAIN;
 			var height = 50;
-			var width = stage.canvas.width-padding*2;
+			var width = stage.canvas.width-UTILS.padding*2;
 			drawButton(
-				padding,
-				stage.canvas.height / 2 - height * 1.5 - padding * 2, 
+				UTILS.padding,
+				stage.canvas.height / 2 - height * 1.5 - UTILS.padding * 2, 
 				height, 
 				width, 
 				GAME, 
 				"Start"
 			);
-			drawButton(padding,stage.canvas.height/2-height/2,height,width,FOOD, "Food");
-			drawButton(padding,stage.canvas.height/2+height/2+padding*2,height,width,HELP, "Help");
+			drawButton(UTILS.padding,stage.canvas.height/2-height/2,height,width,FOOD, "Food");
+			drawButton(UTILS.padding,stage.canvas.height/2+height/2+UTILS.padding*2,height,width,HELP, "Help");
 		};
 		
 		MAIN.update = function(){
@@ -70,32 +70,40 @@
 				stage.removeAllChildren();
 				gameState = GAME;		
 				GAME.populateBoard();
-				GAME.populateList();
+				GAME.addStatistics();
 			});
 		};
 		
-		GAME.populateList = function() {
-			
-			var x = 50*2 * 8 * UTILS.padding;
-			var y = 50;
-			var width = stage.canvas.width-x-padding;
-			var height = UTILS.padding * 5;
-			var list = [];
+		GAME.addStatistics = function() {			
+			var x = UTILS.padding * 2 + 8 * UTILS.imagesize;
+			var y = UTILS.padding;
+			var width = stage.canvas.width - x - UTILS.padding;
+			var offset = 22.5;
+			var scale = 0.5;
+			var height = UTILS.imagesize * 8;
 			stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, width, height)));
-
-			for(var i = 0; i < foodForTheWeek.length; i++){
+			for(var i = 0; i < GAME.foodForTheWeek.length; i++){
 				var food = GAME.foodForTheWeek[i];
-				var scale = (stage.canvas.width-x-padding)/foodForTheWeek.length;
 				var image = new createjs.Bitmap("images/" + food.image);
+				var row = Math.floor(i / 2),
+					col = i % 2;
 				image.scaleY = scale;
 				image.scaleX = scale;
-				image.x = x + (i)*scale;
-				image.y = y;
-				list.push(image);
+				image.x = offset + offset * col + x + UTILS.imagesize * scale * col;
+				image.y = offset + offset * row + y + UTILS.imagesize * scale * row;
 				stage.addChild(image);
-			}
-				
-			
+			}									
+			y = (UTILS.imagesize * scale * 3) + (offset * 6);
+			width = stage.canvas.width - x - UTILS.padding - offset * 2;
+			height = width;
+			//GENERATE THE IMAGE
+			var image = new createjs.Bitmap("images/avatar.png");
+			image.x = x + offset;
+			image.y = y;
+			stage.addChild(image);
+		};
+		
+		GAME.addCharacter = function() {
 		};
 		
 		GAME.generateGamePiece = function() {
@@ -254,7 +262,6 @@
 	
 	var gameState;
     var stage = new createjs.Stage("stage");
-	var padding = 50;
 	var buttonWidth = 100;
 	
 	function drawButton(x,y,height,width,library, text){

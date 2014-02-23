@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "swapping animations supported, waiting for board testing"
+git commit -m "added the character and lined up the shopping cart"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->
