@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "food are now properly removed"
+git commit -m "food will fall but not generate"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->

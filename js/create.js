@@ -247,34 +247,81 @@
 			}
 		};
 		
+		GAME.fillColumns = function(success) {
+			var synch = UTILS.synch(8, success);
+			for(var col = 0; col < 8; col++) {
+				GAME.fillColumn(col, synch);
+			}
+		};
+		
+		GAME.fillColumn = function(col, success) {
+			var empty;
+			for(var row = 7; row >= 0; row--) {
+				var o = GAME.board[row][col];
+				if(o && empty) { //if i am looking at an object and know where to put it
+					//var image = GAME.generateFoodForGrid(col * UTILS.imagesize + UTILS.padding, 0, empty.row, col);
+					var obj = {y:o.image.y};
+					var image = o.image;
+					var action = createjs.Tween.get(obj);
+					GAME.board[empty.row][empty.col] = GAME.board[row][col];
+					GAME.board[row][col] = null;
+					action.to({
+						y : UTILS.padding + empty.row * UTILS.imagesize
+					}, 1000);
+					action.on("change", function() {
+						image.y = Math.floor(obj.y);
+					});
+					action.call(function() {
+						GAME.fillColumn(col, success);
+					});
+					return;
+				}
+				if(!o && !empty) { //if i havent seen an empty and i am looking at one now
+					empty = {
+						row : row,
+						col : col
+					};
+				}
+			}	
+			if(empty) { //if there are empty cells and i need to generate new foods
+				
+			} else {
+				success();
+			}
+		};
+		
 		GAME.generateGamePiece = function() {
 			return GAME.foodForTheWeek[UTILS.next(GAME.foodForTheWeek.length)];
 		};
 		
 		GAME.populateBoard = function() {
-			var size = 47;
 			for(var rows = 0; rows < 8; rows++) {
 				GAME.board[rows] = [];
 				for(var columns = 0; columns < 8; columns++) {
-					var x = columns * size + UTILS.padding, y = rows * size + UTILS.padding;
-					var food = GAME.generateGamePiece();
-					var image = new createjs.Bitmap("images/" + food.image);
-					image.addEventListener("click", GAME.switchPiece);
-					image.x = x
-					image.y = y;
-					image.data = {
-						column : columns,
-						row : rows
-					};
-					GAME.board[rows][columns] = {
-						image : image,
-						food : food,
-						data : image.data
-					};
-					stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, size, size)));
-					stage.addChild(image);
+					var x = columns * UTILS.imagesize + UTILS.padding, y = rows * UTILS.imagesize + UTILS.padding;
+					GAME.generateFoodForGrid(x, y, rows, columns);
 				}
 			}		
+		};
+		
+		GAME.generateFoodForGrid = function(x, y, row, column) {
+			var food = GAME.generateGamePiece();
+			var image = new createjs.Bitmap("images/" + food.image);
+			image.addEventListener("click", GAME.switchPiece);
+			image.x = x
+			image.y = y;
+			image.data = {
+				column : column,
+				row : row
+			};
+			GAME.board[row][column] = {
+				image : image,
+				food : food,
+				data : image.data
+			};
+			stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, UTILS.imagesize, UTILS.imagesize)));
+			stage.addChild(image);			
+			return image;
 		};
 		
 		GAME.update = function(){
@@ -294,18 +341,13 @@
 				if(original) {
 					var d2 = original.data;
 					if(Math.abs(d1.column - d2.column) + Math.abs(d1.row - d2.row) == 1) {
-						console.log("SWAPPING");
 						var synch = UTILS.synch(2, function() {
 							UTILS.swap(original.data, clicked.data);
 							GAME.board[original.data.row][original.data.column] = original;
 							GAME.board[clicked.data.row][clicked.data.column] = clicked;
 							var toBreak = GAME.moveChecker();
 							if(toBreak.length) {
-								//while(toBreak.length && false) {
-									GAME.doBreak(toBreak);
-									//toBreak = GAME.moveChecker();
-								//}
-								GAME.processing = false;
+								GAME.process(toBreak);
 							} else {
 								var synch = UTILS.synch(2, function() {
 									GAME.processing = false;
@@ -328,6 +370,18 @@
 				} else {
 					GAME.selectedPiece = clicked;
 				}
+			}
+		};
+		
+		GAME.process = function(toBreak) {
+			if(toBreak.length) {
+				GAME.doBreak(toBreak);
+				GAME.fillColumns(function() {
+					GAME.process(GAME.moveChecker());
+				});
+			} else {
+				console.log("all done");
+				GAME.processing = false;
 			}
 		};
 
