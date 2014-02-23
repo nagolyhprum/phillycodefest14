@@ -50,8 +50,7 @@
 			shoppingcart.push(value[UTILS.next(value.length)]);
 		}
 		return shoppingcart;
-	};
-		
+	};	
 	
 	(function(){	
 		GAME.init = function() {
@@ -81,6 +80,46 @@
 			var offset = 22.5;
 			var scale = 0.5;
 			var height = UTILS.imagesize * 8;
+		};
+		
+		GAME.checkPoint(col, row){
+			rv = {};
+			var og = GAME[col][row].name;
+			if(((col+2) < GAME.length) &&(og == GAME[col+1][row].name == GAME[col+2][row].name)){
+				rv.north = [[col,row], [col+1,row],[col+2,row]]
+			}
+			if(((col-2) >= 0) &&(og == GAME[col-1][row].name == GAME[col-2][row].name)){
+				rv.south = [[col,row], [col-1,row],[col,row]];
+			}
+			if(((row+2) < GAME[col].length) && (og == GAME[col][row+1].name == GAME[col][row+2].name)){
+				rv.east = [[col,row], [col,row+1],[col,row+2]];
+			}
+			if(((row-2) >= 0) && (og == GAME[col][row-1].name == GAME[col][row-2].name)){
+				rv.west = [[col,row], [col,row-1],[col,row-2]];
+			}
+			return rv;
+		}
+		
+		GAME.moveChecker(){
+			var matching = [];
+			for (int i = 0; i < GAME.board.length; i++){
+				for(int j = 0; j < GAME.board[j].length; j++){
+					matching.push(checkPoint(GAME.board[i][j]));
+				}
+			}
+				
+			return matching;
+		}
+		
+		
+		GAME.populateList = function() {
+			
+			var x = 50*2 * 8 * UTILS.padding;
+			var y = 50;
+			var width = stage.canvas.width-x-padding;
+			var height = UTILS.padding * 5;
+			var list = [];
+>>>>>>> ce6d609fec8af8815bef514f0809c20c8791c405
 			stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, width, height)));
 			for(var i = 0; i < GAME.foodForTheWeek.length; i++){
 				var food = GAME.foodForTheWeek[i];
