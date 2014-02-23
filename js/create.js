@@ -20,14 +20,7 @@
 			gameState = MAIN;
 			var height = 50;
 			var width = stage.canvas.width-UTILS.padding*2;
-			drawButton(
-				UTILS.padding,
-				stage.canvas.height / 2 - height * 1.5 - UTILS.padding * 2, 
-				height, 
-				width, 
-				GAME, 
-				"Start"
-			);
+			drawButton(UTILS.padding, stage.canvas.height / 2 - height * 1.5 - UTILS.padding * 2, height, width, GAME, "Start");
 			drawButton(UTILS.padding,stage.canvas.height/2-height/2,height,width,FOOD, "Food");
 			drawButton(UTILS.padding,stage.canvas.height/2+height/2+UTILS.padding*2,height,width,HELP, "Help");
 		};
@@ -35,7 +28,6 @@
 		MAIN.update = function(){
 		
 		};
-
 	}());
 	
 	var GAME = window.GAME || {};
@@ -104,13 +96,23 @@
 			}
 		};
 		
+		var statistics;
+		
 		GAME.addStatistics = function() {	
+			if(statistics) {
+				stage.removeChild(statistics);
+			}
+			statistics = new createjs.Container();
+			statistics.x = 0;
+			statistics.y = 0;
+			statistics.width = stage.canvas.width;
+			statistics.height = stage.canvas.height;
 			//shopping cart
 			var x = UTILS.padding * 2 + 8 * UTILS.imagesize;
 			var y = UTILS.padding;
-			var width = stage.canvas.width-x-UTILS.padding;
+			var width = stage.canvas.width - x - UTILS.padding;
 			var height = UTILS.imagesize * 8;
-			stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, width, height)));
+			statistics.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, width, height)));
 			for(var i = 0; i < GAME.foodForTheWeek.length; i++){
 				var food = GAME.foodForTheWeek[i];
 				var image = new createjs.Bitmap("images/" + food.image);
@@ -120,7 +122,7 @@
 				image.scaleX = UTILS.scale;
 				image.x = UTILS.offset + UTILS.offset * col + x + UTILS.imagesize * UTILS.scale * col;
 				image.y = UTILS.offset + UTILS.offset * row + y + UTILS.imagesize * UTILS.scale * row;
-				stage.addChild(image);
+				statistics.addChild(image);
 			}									
 			//AVATAR
 			y = (UTILS.imagesize * UTILS.scale * 3) + (UTILS.offset * 6);
@@ -130,7 +132,7 @@
 			var image = new createjs.Bitmap("images/avatar.png");
 			image.x = x + UTILS.offset;
 			image.y = y;
-			stage.addChild(image);			
+			statistics.addChild(image);			
 			//BARS
 			var i = 0, bar_width = 5;			
 			for(var group in GAME.foods) {
@@ -140,8 +142,8 @@
 				text.x = tx;
 				text.y = ty;
 				text.textBaseline = "bottom";				
-				stage.addChild(text);
-				stage.addChild(GAME.bars[group] = new createjs.Shape(new createjs.Graphics().ss(1).s("#000").f("#f00").r(tx + 1, 0, bar_width, UTILS.barheight)));
+				statistics.addChild(text);
+				statistics.addChild(GAME.bars[group] = new createjs.Shape(new createjs.Graphics().ss(1).s("#000").f("#f00").r(tx + 1, 0, bar_width, UTILS.barheight)));
 				i++;
 			}			
 			//TEXT STATS
@@ -150,19 +152,21 @@
 			txtCalories.x = x + UTILS.offset;
 			txtCalories.y = y + height;
 			txtCalories.textBaseline = "top";
-			stage.addChild(txtCalories);
+			statistics.addChild(txtCalories);
 			//DAY
 			var txtDay = GAME.txtDay = new createjs.Text("Day : x / y");
 			txtDay.x = x + UTILS.offset;
 			txtDay.y = y + height + 12;
 			txtDay.textBaseline = "top";
-			stage.addChild(txtDay);
+			statistics.addChild(txtDay);
 			//MEAL
 			var txtMeal = GAME.txtMeal = new createjs.Text("Meal : Breakfast");
 			txtMeal.x = x + UTILS.offset;
 			txtMeal.y = y + height + 24;
 			txtMeal.textBaseline = "top";
-			stage.addChild(txtMeal);
+			statistics.addChild(txtMeal);
+			//ADD STATISTICS
+			stage.addChild(statistics);
 			GAME.updateStatistics();
 		};
 		
@@ -239,9 +243,6 @@
 					GAME[last.food.foodgroupname.toLowerCase()]++;					
 				}
 			}
-			if(!is_init) {
-				GAME.updateStatistics();
-			}
 		};
 		
 		GAME.fillColumns = function(success, is_init) {
@@ -266,7 +267,7 @@
 						var action = createjs.Tween.get(obj);
 						action.to({
 							y : UTILS.padding + empty.row * UTILS.imagesize
-						}, 1000);
+						}, UTILS.timetomove);
 						action.on("change", function() {
 							image.y = Math.floor(obj.y);
 						});
@@ -293,7 +294,7 @@
 					var action = createjs.Tween.get(obj);
 					action.to({
 						y : UTILS.padding + empty.row * UTILS.imagesize
-					}, 1000);
+					}, UTILS.timetomove);
 					action.on("change", function() {
 						image.y = Math.floor(obj.y);
 					});
@@ -365,14 +366,28 @@
 							GAME.board[original.data.row][original.data.column] = original;
 							GAME.board[clicked.data.row][clicked.data.column] = clicked;
 							var toBreak = GAME.moveChecker();
-							if(toBreak.length) {							
-								GAME.meal = GAME.meal + 1;
-								if(GAME.meal == GAME.meals.length) {
-									GAME.meal = 0;
-									GAME.day++;
-									//MAKE A DAY AND RESET OTHER DATA
-								}
-								GAME.process(toBreak, false);
+							if(toBreak.length) {		
+								GAME.process(toBreak, false, function() {					
+									GAME.meal = GAME.meal + 1;
+									if(GAME.meal == GAME.meals.length) {
+										//SAVE DAY
+										GAME.meal = 0;
+										GAME.calories = 0;
+										GAME.grain = 0;
+										GAME.protein = 0;
+										GAME.vegetable = 0;
+										GAME.fruit = 0;
+										GAME.junk = 0;
+										GAME.dairy = 0;		
+										GAME.day++;
+										if(GAME.day % 7 == 0) {
+											GAME.foodForTheWeek = GAME.shopping();
+											GAME.addStatistics();
+										}
+									}									
+									GAME.processing = false;
+									GAME.updateStatistics();
+								});
 							} else {
 								var synch = UTILS.synch(2, function() {
 									GAME.processing = false;
@@ -395,27 +410,24 @@
 				} else {
 					GAME.selectedPiece = clicked;
 				}
-			} else {
-				console.log("I am processing.");
 			}
 		};
 		
-		GAME.process = function(toBreak, is_init) {
+		GAME.process = function(toBreak, is_init, complete) {
 			if(toBreak.length) {
 				GAME.doBreak(toBreak, is_init);
 				GAME.fillColumns(function() {
-					GAME.process(GAME.moveChecker(), is_init);
+					GAME.process(GAME.moveChecker(), is_init, complete);
 				}, is_init);
 			} else {
-				console.log("all done");
-				GAME.processing = false;
+				complete && complete();
 			}
 		};
 
 		GAME.move = function(obj, x1, y1, x2, y2, complete) {
 			var pos = {x : x1, y : y1};
 			var action = createjs.Tween.get(pos);
-			action.to({x : x2, y : y2}, 1000);
+			action.to({x : x2, y : y2}, UTILS.timetomove);
 			action.on("change", function() {
 				obj.image.x = Math.floor(pos.x);
 				obj.image.y = Math.floor(pos.y);
