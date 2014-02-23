@@ -30,9 +30,13 @@
 		echo mysqli_error($conn);
 		mysqli_stmt_close($stmt);
 		echo mysqli_error($conn);
-		echo json_encode(1);
+		echo json_encode(array(
+			"day" => 1
+		));
 	} else {
-		echo json_encode($daysPlayed + 1);
+		echo json_encode(array(
+			"day" => $daysPlayed + 1
+		));
 	}
 	
 	require_once("disconnect.php");

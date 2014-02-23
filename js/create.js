@@ -76,8 +76,8 @@
 			GAME.dairy = 0;			
 			GAME.meal = 0;
 			GAME.foodForTheWeek = GAME.shopping();
-			DB.createGame(4, function(day) {				
-				GAME.day = day;
+			DB.createGame(4, function(game) {				
+				GAME.day = game.day;
 				stage.removeAllChildren();
 				gameState = GAME;		
 				GAME.populateBoard();
