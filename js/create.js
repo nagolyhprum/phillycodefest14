@@ -139,6 +139,20 @@
 				image.scaleX = UTILS.scale;
 				image.x = UTILS.offset + UTILS.offset * col + x + UTILS.imagesize * UTILS.scale * col;
 				image.y = UTILS.offset + UTILS.offset * row + y + UTILS.imagesize * UTILS.scale * row;
+				image.food = food;
+				image.addEventListener("mouseover", function(e) {
+					console.log("over");
+					/*
+					stage.addChild(e.target.hover = GAME.createHover(0, 0, e.target.nutrition));
+					*/
+				});
+				image.addEventListener("mouseout", function(e) {
+					console.log("out");
+					/*
+					stage.removeChild(e.target.hover);
+					image.hover = null;
+					*/
+				});
 				statistics.addChild(image);
 			}									
 			//AVATAR
@@ -512,6 +526,7 @@
 	
 	var gameState;
     var stage = new createjs.Stage("stage");
+	stage.enableMouseOver(20);
 	var buttonWidth = 100;
 	
 	function drawButton(x,y,height,width,library, text){
