@@ -12,27 +12,33 @@
 	mysqli_stmt_execute($stmt);
 	
 	//true - account created
-	//false - accound loaded
+	//false - account loaded
 	//null - nothing happened
 	if(mysqli_stmt_fetch($stmt)){
-		$_SESSION['id'];
+		$_SESSION['id'] = $userid; 
 		mysqli_stmt_close($stmt);	
+		//SELECT
 		$result = false;	
 	} else if($height && $weight && $gender && $age && $fbid){
 		mysqli_stmt_close($stmt);
 		$sql = "INSERT INTO `usertbl` (`userheight`, `userweight`, `usergender`, `userage`, `userfbid`) VALUES (?,?,?,?,?)";
 		$stmt = mysqli_prepare($conn, $sql);
-		$error .= mysqli_error($conn);
 		mysqli_stmt_bind_param($stmt, 'iiiii', $height, $weight, $gender, $age, $fbid);
-		$error .= mysqli_error($conn);
 		mysqli_stmt_execute($stmt);
-		$error .= mysqli_error($conn);
 		mysqli_stmt_close($stmt);		
 		$_SESSION['id'] = mysqli_insert_id($conn);	
 		$result = true;	
 	} else {
 		$result = null;	
 	}
-	echo json_encode(array($result, $error, $height, $weight, $gender, $age, $fbid));
+	echo json_encode(array(
+		"result" => $result, 
+		"height" => $height, 
+		"weight" => $weight, 
+		"gender" => $gender, 
+		"age" => $age, 
+		"fbid" => $fbid,
+		"id" => $userid
+	));
 	require_once("disconnect.php");
 ?>

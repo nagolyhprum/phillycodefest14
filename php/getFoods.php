@@ -5,7 +5,7 @@ SELECT
 	foodimage, 
 	foodname, 
 	foodgroupname,
-	foodcalories
+	foodcalories	
 FROM 
 	foodgrouptbl as fg
 INNER JOIN
@@ -19,7 +19,8 @@ ON
 		$array[$foodgroupname][] = array(
 			"name" => $foodname,
 			"calories" => $foodcalories,
-			"image" => $foodimage
+			"image" => $foodimage,
+			"foodgroupname" => $foodgroupname
 		);
 	}
 	mysqli_stmt_close($stmt);

@@ -30,11 +30,21 @@ var UTILS = window.UTILS || {};
 	
 	UTILS.padding = 50;
 	
+	UTILS.offset = 22.5;
+	
+	UTILS.scale = 0.5;
+	
+	UTILS.man = 1;
+	
+	UTILS.woman = 0;
+	
+	UTILS.barheight = 40
+	
 	UTILS.getCaloricIntake = function(height, weight, gender, age){
-		if(gender){
-			return (66 + (13.7 * weight) + (5 * height) - (6.8 * age));
+		if(gender == UTILS.man){
+			return Math.floor(66 + (13.7 * weight) + (5 * height) - (6.8 * age));
 		} else{
-			return (655 + (9.6 * weight) + (1.8 * height) - (4.7 * age));
+			return Math.floor(655 + (9.6 * weight) + (1.8 * height) - (4.7 * age));
 		}
 	};
 	

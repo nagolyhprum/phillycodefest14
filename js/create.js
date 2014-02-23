@@ -1,7 +1,7 @@
 (function(){
 	var User = {};
 	
-	DB.createUser(10, 20, 30, 40, function(user) {
+	DB.createUser(70, 130, UTILS.man, 22, function(user) {
 		if(user.result === true) {
 			alert("Thank you for creating your new account.");
 		} else if(user.result === false) {
@@ -60,9 +60,9 @@
 			GAME.bars = {};
 			GAME.board = [];
 			GAME.calories = 0;
-			GAME.grains = 0;
-			GAME.protien = 0;
-			GAME.vegetables = 0;
+			GAME.grain = 0;
+			GAME.protein = 0;
+			GAME.vegetable = 0;
 			GAME.fruit = 0;
 			GAME.junk = 0;
 			GAME.dairy = 0;			
@@ -77,10 +77,34 @@
 			});
 		};
 		
+		GAME.meals = [
+			"Breakfast",
+			"Lunch",
+			"Snack",
+			"Dinner",
+			"Desert"
+		];
+		
+		GAME.updateStatistics = function() {
+			GAME.txtCalories.text = "Cal. : " + GAME.calories + " / " + UTILS.getCaloricIntake(User.height, User.weight, User.gender, User.age);
+			GAME.txtDay.text = "Day : " + GAME.day + " / " + 28;
+			GAME.txtMeal.text = "Meal : " + GAME.meals[GAME.meal];
+			var ty = stage.canvas.height - UTILS.padding - UTILS.offset,
+				total = GAME.grain + GAME.vegetable + GAME.fruit + GAME.junk + GAME.protein + GAME.dairy,
+				y = ty - UTILS.barheight - 12;
+			for(var group in GAME.foods) {			
+				var value = GAME[group.toLowerCase()];
+				if(value) {
+					GAME.bars[group].scaleY = value / total;
+				} else {
+					GAME.bars[group].scaleY = 0.01;
+				}				
+				GAME.bars[group].y = y + (1 - GAME.bars[group].scaleY) * UTILS.barheight;
+			}
+		};
+		
 		GAME.addStatistics = function() {	
 			//shopping cart
-			var scale = 0.5;
-			var offset = 22.5;
 			var x = UTILS.padding * 2 + 8 * UTILS.imagesize;
 			var y = UTILS.padding;
 			var width = stage.canvas.width-x-UTILS.padding;
@@ -91,53 +115,54 @@
 				var image = new createjs.Bitmap("images/" + food.image);
 				var row = Math.floor(i / 2),
 					col = i % 2;
-				image.scaleY = scale;
-				image.scaleX = scale;
-				image.x = offset + offset * col + x + UTILS.imagesize * scale * col;
-				image.y = offset + offset * row + y + UTILS.imagesize * scale * row;
+				image.scaleY = UTILS.scale;
+				image.scaleX = UTILS.scale;
+				image.x = UTILS.offset + UTILS.offset * col + x + UTILS.imagesize * UTILS.scale * col;
+				image.y = UTILS.offset + UTILS.offset * row + y + UTILS.imagesize * UTILS.scale * row;
 				stage.addChild(image);
 			}									
 			//AVATAR
-			y = (UTILS.imagesize * scale * 3) + (offset * 6);
-			width = stage.canvas.width - x - UTILS.padding - offset * 2;
+			y = (UTILS.imagesize * UTILS.scale * 3) + (UTILS.offset * 6);
+			width = stage.canvas.width - x - UTILS.padding - UTILS.offset * 2;
 			height = width;
 			//GENERATE THE IMAGE
 			var image = new createjs.Bitmap("images/avatar.png");
-			image.x = x + offset;
+			image.x = x + UTILS.offset;
 			image.y = y;
 			stage.addChild(image);			
 			//BARS
-			var i = 0, bar_height = 40, bar_width = 5;			
+			var i = 0, bar_width = 5;			
 			for(var group in GAME.foods) {
-				var tx = x + offset / 2 * i + offset + 2,
-					ty = stage.canvas.height - UTILS.padding - offset;
+				var tx = x + UTILS.offset / 2 * i + UTILS.offset + 2,
+					ty = stage.canvas.height - UTILS.padding - UTILS.offset;
 				var text = new createjs.Text(group[0]);
 				text.x = tx;
 				text.y = ty;
 				text.textBaseline = "bottom";				
 				stage.addChild(text);
-				stage.addChild(GAME.bars[group] = new createjs.Shape(new createjs.Graphics().ss(1).s("#000").f("#f00").r(tx + 1, ty - bar_height - 12, bar_width, bar_height)));
+				stage.addChild(GAME.bars[group] = new createjs.Shape(new createjs.Graphics().ss(1).s("#000").f("#f00").r(tx + 1, 0, bar_width, UTILS.barheight)));
 				i++;
 			}			
 			//TEXT STATS
 			//CALORIES
-			var txtCalories = GAME.txtCalories = new createjs.Text("Calories : x / y");
-			txtCalories.x = x + offset;
+			var txtCalories = GAME.txtCalories = new createjs.Text("Cal. : x / y");
+			txtCalories.x = x + UTILS.offset;
 			txtCalories.y = y + height;
 			txtCalories.textBaseline = "top";
 			stage.addChild(txtCalories);
 			//DAY
 			var txtDay = GAME.txtDay = new createjs.Text("Day : x / y");
-			txtDay.x = x + offset;
+			txtDay.x = x + UTILS.offset;
 			txtDay.y = y + height + 12;
 			txtDay.textBaseline = "top";
 			stage.addChild(txtDay);
 			//MEAL
 			var txtMeal = GAME.txtMeal = new createjs.Text("Meal : Breakfast");
-			txtMeal.x = x + offset;
+			txtMeal.x = x + UTILS.offset;
 			txtMeal.y = y + height + 24;
 			txtMeal.textBaseline = "top";
 			stage.addChild(txtMeal);
+			GAME.updateStatistics();
 		};
 		
 		GAME.checkPoint = function(col, row){
@@ -360,7 +385,7 @@ circle = new createjs.Shape();
 circle.graphics.beginFill("red").drawCircle(100, 100, 25);
 circle.x = circle.y = 50;
 circle.addEventListener("click", function(event) {
-	DB.createDay(GAME.calories, GAME.grains, GAME.protien, GAME.vegetables, GAME.fruit, GAME.junk, GAME.dairy, function(bool) {
+	DB.createDay(GAME.calories, GAME.grain, GAME.protien, GAME.vegetable, GAME.fruit, GAME.junk, GAME.dairy, function(bool) {
 		if(bool) {
 			alert("The game is over");
 		}
