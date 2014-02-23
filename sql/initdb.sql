@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `foodtbl` (
 INSERT INTO `foodtbl` (`foodgroupid`, `foodname`, `foodimage`, `foodcalories`) VALUES
 	(1, "Grape", "fruit_a.png", 10),
 	(1, "Apple", "fruit_b.png", 20),
-	(1, "Pine Apple", "fruit_c.png", 30),
+	(1, "Pineapple", "fruit_c.png", 30),
 	(2, "Carrot", "vegetable_a.png", 10),
 	(2, "Lettuce", "vegetable_b.png", 20),
 	(2, "Tomato", "vegetable_c.png", 30),

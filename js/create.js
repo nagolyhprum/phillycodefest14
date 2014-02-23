@@ -42,19 +42,18 @@
 	DB.getFoods(function(f) {
 		GAME.foods = f;
 	});
+	
+	GAME.shopping = function(){
+		var shoppingcart = [];
+		for(var key in GAME.foods){
+			var value = GAME.foods[key];
+			shoppingcart.push(value[UTILS.next(value.length)]);
+		}
+		return shoppingcart;
+	};
 		
 	
-	(function(){		
-		GAME.shopping = function() {
-			return [
-				GAME.foods.Grain[0],
-				GAME.foods.Junk[0],
-				GAME.foods.Fruit[0],
-				GAME.foods.Vegetable[0],
-				GAME.foods.Dairy[0],
-				GAME.foods.Protein[0]
-			];
-		};
+	(function(){	
 		GAME.init = function() {
 			GAME.board = [];
 			GAME.calories = 0;
@@ -70,40 +69,37 @@
 				GAME.day = day;
 				stage.removeAllChildren();
 				gameState = GAME;		
-				var size = 47;
-				for(var columns = 0; columns < 8; columns++) {
-					for(var rows = 0; rows < 8; rows++) {
-						stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(columns * size + UTILS.padding, rows * size + UTILS.padding, size, size)));
-					}
-				}
-				//Begin Day Add
-				circle = new createjs.Shape();
-				circle.graphics.beginFill("red").drawCircle(100, 100, 25);
-				circle.x = circle.y = 50;
-				circle.addEventListener("click", function(event) {
-					DB.createDay(GAME.calories, GAME.grains, GAME.protien, GAME.vegetables, GAME.fruit, GAME.junk, GAME.dairy, function(bool) {
-						if(bool) {
-							alert("The game is over");
-						}
-					});
-				});
-				stage.addChild(circle);	
-				//End Day Add				
+				GAME.populateBoard();
+				GAME.populateCart();
 			});
+		};
+		
+		GAME.populateCart = function() {
+		};
+		
+		GAME.populateBoard = function() {
+			var size = 47;
+			for(var rows = 0; rows < 8; rows++) {
+				GAME.board[rows] = [];
+				for(var columns = 0; columns < 8; columns++) {
+					var x = columns * size + UTILS.padding, y = rows * size + UTILS.padding;
+					var food = GAME.foodForTheWeek[UTILS.next(GAME.foodForTheWeek.length)];
+					var image = new createjs.Bitmap("images/" + food.image);
+					image.x = x
+					image.y = y;
+					GAME.board[rows][columns] = {
+						image : image,
+						food : food
+					};
+					stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, size, size)));
+					stage.addChild(image);
+				}
+			}		
 		};
 		
 		GAME.update = function(){
 			
 		};
-		
-		GAME.shopping = function(){
-			var shoppingcart = [];
-			for(var key in GAME.foods){
-				var value = GAME.foods[key];
-				shoppingcart.push(value[Math.floor(Math.random()*value.length)]);
-			}
-			return shoppingcart;
-		}
 		
 	}());
 	
@@ -191,3 +187,18 @@
 	});
 }());
 
+/*
+//Begin Day Add
+circle = new createjs.Shape();
+circle.graphics.beginFill("red").drawCircle(100, 100, 25);
+circle.x = circle.y = 50;
+circle.addEventListener("click", function(event) {
+	DB.createDay(GAME.calories, GAME.grains, GAME.protien, GAME.vegetables, GAME.fruit, GAME.junk, GAME.dairy, function(bool) {
+		if(bool) {
+			alert("The game is over");
+		}
+	});
+});
+stage.addChild(circle);	
+//End Day Add		
+*/

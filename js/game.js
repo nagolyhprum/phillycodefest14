@@ -5,6 +5,10 @@ var UTILS = window.UTILS || {};
 		return ((weight/(height * height)) * 703);
 	};
 	
+	UTILS.next = function(max) {
+		return Math.floor(max * Math.random());
+	};
+	
 	UTILS.padding = 50;
 	
 	UTILS.getCaloricIntake = function(height, weight, gender, age){
