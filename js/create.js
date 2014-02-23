@@ -89,10 +89,12 @@
 		
 		GAME.meals = [
 			"Breakfast",
+			/*
 			"Lunch",
 			"Snack",
 			"Dinner",
 			"Desert"
+			*/
 		];
 		
 		GAME.createhover = function(name,x,y,obj){
@@ -176,7 +178,9 @@
 				image.y = UTILS.offset + UTILS.offset * row + y + UTILS.imagesize * UTILS.scale * row;
 				image.food = food;
 				image.addEventListener("mouseover", function(e) {
-					stage.addChild(e.target.hover = GAME.createhover(e.target.food.name, e.target.x - UTILS.textboxwidth + UTILS.imagesize, e.target.y + UTILS.imagesize, e.target.food.nutrition));
+					if(!GAME.processing) {
+						stage.addChild(e.target.hover = GAME.createhover(e.target.food.name, e.target.x - UTILS.textboxwidth + UTILS.imagesize, e.target.y + UTILS.imagesize, e.target.food.nutrition));
+					}
 				});
 				image.addEventListener("mouseout", function(e) {
 					stage.removeChild(e.target.hover);
@@ -410,7 +414,6 @@
 		GAME.selectedPiece = false;
 		
 		GAME.processing = false;
-
 		
 		GAME.bars = {};
 		
@@ -434,7 +437,7 @@
 										//SAVE DAY
 										DB.createDay(GAME.calories, GAME.grain, GAME.protein, GAME.vegetable, GAME.fruit, GAME.junk, GAME.dairy, function(bool) {
 											if(bool) {
-												console.log("GAME OVER");
+												MAIN.init();
 											}
 										});
 										GAME.meal = 0;

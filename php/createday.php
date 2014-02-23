@@ -34,7 +34,7 @@
 		mysqli_stmt_close($stmt);
 	}
 	
-	echo json_encode($currentDay >= $weeks * 7);
+	echo json_encode($currentDay + 1 >= $weeks * 7);
 
 	
 	require_once("disconnect.php");
