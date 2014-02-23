@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "junk is now written to the database"
+git commit -m "organized data sets"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->
