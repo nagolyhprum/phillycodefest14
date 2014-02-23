@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "can create personal accounts which are linked to facebook ids"
+git commit -m "fixed a sql bug, need to add calories"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->
