@@ -10,6 +10,23 @@ var UTILS = window.UTILS || {};
 	UTILS.next = function(max) {
 		return Math.floor(max * Math.random());
 	};
+
+	UTILS.swap = function(a, b) {
+		for(var i in a) {
+			var temp = a[i];
+			a[i] = b[i];
+			b[i] = temp;
+		}
+	};
+	
+	UTILS.synch = function(calls, callback) {
+		return function() {
+			calls--;
+			if(!calls) {
+				callback();
+			}
+		};
+	};
 	
 	UTILS.padding = 50;
 	
