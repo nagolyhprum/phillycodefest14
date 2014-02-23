@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "added random food to the grid"
+git commit -m "swapping animations supported, waiting for board testing"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->

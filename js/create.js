@@ -77,19 +77,29 @@
 		GAME.populateCart = function() {
 		};
 		
+		GAME.generateGamePiece = function() {
+			return GAME.foodForTheWeek[UTILS.next(GAME.foodForTheWeek.length)];
+		};
+		
 		GAME.populateBoard = function() {
 			var size = 47;
 			for(var rows = 0; rows < 8; rows++) {
 				GAME.board[rows] = [];
 				for(var columns = 0; columns < 8; columns++) {
 					var x = columns * size + UTILS.padding, y = rows * size + UTILS.padding;
-					var food = GAME.foodForTheWeek[UTILS.next(GAME.foodForTheWeek.length)];
+					var food = GAME.generateGamePiece();
 					var image = new createjs.Bitmap("images/" + food.image);
+					image.addEventListener("click", GAME.switchPiece);
 					image.x = x
 					image.y = y;
+					image.data = {
+						column : columns,
+						row : rows
+					};
 					GAME.board[rows][columns] = {
 						image : image,
-						food : food
+						food : food,
+						data : image.data
 					};
 					stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, size, size)));
 					stage.addChild(image);
@@ -97,10 +107,74 @@
 			}		
 		};
 		
-		GAME.update = function(){
-			
+		GAME.moveChecker = function() {
+			return [];
 		};
 		
+		GAME.update = function(){
+		};
+		
+		GAME.selectedPiece = false;
+		
+		GAME.processing = false;
+		
+		GAME.switchPiece = function(e) {			
+			if(!GAME.processing) {
+				var d1 = e.target.data;
+				var clicked = GAME.board[d1.row][d1.column];
+				var original = GAME.selectedPiece;
+				if(original) {
+					var d2 = original.data;
+					if(Math.abs(d1.column - d2.column) + Math.abs(d1.row - d2.row) == 1) {
+						console.log("SWAPPING");
+						var synch = UTILS.synch(2, function() {
+							UTILS.swap(original.data, clicked.data);
+							GAME.board[original.data.row][original.data.column] = original;
+							GAME.board[clicked.data.row][clicked.data.column] = clicked;
+							var toBreak = GAME.moveChecker();
+							if(toBreak.length) {
+								while(toBreak.length) {
+									GAME.doBreak(toBreak);
+									toBreak = GAME.moveChecker();
+								}
+								GAME.processing = false;
+							} else {
+								var synch = UTILS.synch(2, function() {
+									GAME.processing = false;
+								});
+								//swap in the array
+								UTILS.swap(original.data, clicked.data);
+								GAME.board[original.data.row][original.data.column] = original;
+								GAME.board[clicked.data.row][clicked.data.column] = clicked;
+								GAME.move(clicked, clicked.image.x, clicked.image.y, original.image.x, original.image.y, synch);
+								GAME.move(original, original.image.x, original.image.y, clicked.image.x, clicked.image.y, synch);								
+							}
+						});
+						GAME.processing = true;
+						GAME.move(clicked, clicked.image.x, clicked.image.y, original.image.x, original.image.y, synch);
+						GAME.move(original, original.image.x, original.image.y, clicked.image.x, clicked.image.y, synch);
+						GAME.selectedPiece = false;
+					} else {
+						GAME.selectedPiece = clicked;
+					}
+				} else {
+					GAME.selectedPiece = clicked;
+				}
+			}
+		};
+
+		GAME.move = function(obj, x1, y1, x2, y2, complete) {
+			var pos = {x : x1, y : y1};
+			var action = createjs.Tween.get(pos);
+			action.to({x : x2, y : y2}, 1000);
+			action.on("change", function() {
+				obj.image.x = Math.floor(pos.x);
+				obj.image.y = Math.floor(pos.y);
+			});
+			action.call(function() {
+				complete && complete();
+			});
+		};
 	}());
 	
 	var FOOD = window.FOOD || {};
