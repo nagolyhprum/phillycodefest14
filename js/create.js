@@ -165,33 +165,86 @@
 			GAME.updateStatistics();
 		};
 		
-		GAME.checkPoint = function(col, row){
-			var rv = {};
-			var og = GAME[col][row].name;
-			if(((col+2) < GAME.length) &&(og == GAME[col+1][row].name == GAME[col+2][row].name)){
-				rv.north = [[col,row], [col+1,row],[col+2,row]]
-			}
-			if(((col-2) >= 0) &&(og == GAME[col-1][row].name == GAME[col-2][row].name)){
-				rv.south = [[col,row], [col-1,row],[col,row]];
-			}
-			if(((row+2) < GAME[col].length) && (og == GAME[col][row+1].name == GAME[col][row+2].name)){
-				rv.east = [[col,row], [col,row+1],[col,row+2]];
-			}
-			if(((row-2) >= 0) && (og == GAME[col][row-1].name == GAME[col][row-2].name)){
-				rv.west = [[col,row], [col,row-1],[col,row-2]];
-			}
-			return rv;
-		};
-		
 		GAME.moveChecker = function(){
-			var matching = [];
-			for (var i = 0; i < GAME.board.length; i++){
-				for(var j = 0; j < GAME.board[i].length; j++){
-					matching.push(checkPoint(GAME.board[i][j]));
+			var r = [];
+			//check the rows
+			for(var row = 0; row < 8; row++) {
+				var consecutive = 1, last = GAME.board[row][0].food.foodgroupname;
+				for(var col = 1; col < 8; col++) { 
+					var current = GAME.board[row][col].food.foodgroupname;
+					if(current == last) {
+						consecutive++;
+					} else {
+						consecutive = 1;
+					}
+					last = current;
+					if(consecutive >= 3) {
+						r.push([{
+							col : col,
+							row : row
+						}, {
+							col : col - 1,
+							row : row
+						}, {
+							col : col - 2,
+							row : row
+						}]);
+					}
+				}
+			}			
+			//check the columns
+			for(var col = 0; col < 8; col++) { 
+				var consecutive = 1, last = GAME.board[0][col].food.foodgroupname;
+				for(var row = 1; row < 8; row++) {
+					var current = GAME.board[row][col].food.foodgroupname;
+					if(current == last) {
+						consecutive++;
+					} else {
+						consecutive = 1;
+					}
+					last = current;
+					if(consecutive >= 3) {
+						r.push([{
+							col : col,
+							row : row
+						}, {
+							col : col,
+							row : row - 1
+						}, {
+							col : col,
+							row : row - 2
+						}]);
+					}
 				}
 			}
-				
-			return matching;
+			return r;
+		};
+		
+		GAME.doBreak = function(r, is_init) {	
+			for(var i = 0; i < r.length; i++) {
+				var consecutive = 0;
+				var last;
+				for(var j = 0; j < r[i].length; j++) {
+					var o = r[i][j];
+					if(GAME.board[o.row][o.col]) {
+						consecutive++;
+						last = GAME.board[o.row][o.col];
+						stage.removeChild(last.image);
+						GAME.board[o.row][o.col] = null;
+					}
+				}
+				if(consecutive == 3 && !is_init) {
+					GAME.calories += last.food.calories;
+					GAME[last.food.foodgroupname.toLowerCase()]++;					
+				}
+			}
+			if(!is_init) {
+				GAME.meal = GAME.meal + 1;
+				if(GAME.meal > GAME.meals.length) {
+					//MAKE A DAY
+				}
+				GAME.updateStatistics();
+			}
 		};
 		
 		GAME.generateGamePiece = function() {
@@ -224,10 +277,6 @@
 			}		
 		};
 		
-		GAME.moveChecker = function() {
-			return [];
-		};
-		
 		GAME.update = function(){
 		};
 		
@@ -252,10 +301,10 @@
 							GAME.board[clicked.data.row][clicked.data.column] = clicked;
 							var toBreak = GAME.moveChecker();
 							if(toBreak.length) {
-								while(toBreak.length) {
+								//while(toBreak.length && false) {
 									GAME.doBreak(toBreak);
-									toBreak = GAME.moveChecker();
-								}
+									//toBreak = GAME.moveChecker();
+								//}
 								GAME.processing = false;
 							} else {
 								var synch = UTILS.synch(2, function() {

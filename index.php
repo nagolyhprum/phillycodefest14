@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "statistics visuals are now easily updated"
+git commit -m "food are now properly removed"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->
