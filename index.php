@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "supports nutrition data for foods"
+git commit -m "nutritional values are stored in their own object"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->
