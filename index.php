@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "added the character and lined up the shopping cart"
+git commit -m "add statistics, need to update them"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->

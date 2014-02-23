@@ -1,12 +1,15 @@
 (function(){
-	DB.createUser(10, 20, 30, 40, function(bool) {
-		if(bool[0] === true) {
+	var User = {};
+	
+	DB.createUser(10, 20, 30, 40, function(user) {
+		if(user.result === true) {
 			alert("Thank you for creating your new account.");
-		} else if(bool[0] === false) {
+		} else if(user.result === false) {
 			alert("Thank you for reusing your account.");
-		} else if(bool[0] === null){			
+		} else if(user.result === null){			
 			alert("Uh oh, could not create an account.");
 		}
+		User = user;
 	});
 
 	var MAIN = window.MAIN || {};
@@ -54,6 +57,7 @@
 	
 	(function(){	
 		GAME.init = function() {
+			GAME.bars = {};
 			GAME.board = [];
 			GAME.calories = 0;
 			GAME.grains = 0;
@@ -73,17 +77,71 @@
 			});
 		};
 		
-		GAME.addStatistics = function() {			
+		GAME.addStatistics = function() {	
+			//shopping cart
+			var scale = 0.5;
+			var offset = 22.5;
 			var x = UTILS.padding * 2 + 8 * UTILS.imagesize;
 			var y = UTILS.padding;
-			var width = stage.canvas.width - x - UTILS.padding;
-			var offset = 22.5;
-			var scale = 0.5;
+			var width = stage.canvas.width-x-UTILS.padding;
 			var height = UTILS.imagesize * 8;
+			stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, width, height)));
+			for(var i = 0; i < GAME.foodForTheWeek.length; i++){
+				var food = GAME.foodForTheWeek[i];
+				var image = new createjs.Bitmap("images/" + food.image);
+				var row = Math.floor(i / 2),
+					col = i % 2;
+				image.scaleY = scale;
+				image.scaleX = scale;
+				image.x = offset + offset * col + x + UTILS.imagesize * scale * col;
+				image.y = offset + offset * row + y + UTILS.imagesize * scale * row;
+				stage.addChild(image);
+			}									
+			//AVATAR
+			y = (UTILS.imagesize * scale * 3) + (offset * 6);
+			width = stage.canvas.width - x - UTILS.padding - offset * 2;
+			height = width;
+			//GENERATE THE IMAGE
+			var image = new createjs.Bitmap("images/avatar.png");
+			image.x = x + offset;
+			image.y = y;
+			stage.addChild(image);			
+			//BARS
+			var i = 0, bar_height = 40, bar_width = 5;			
+			for(var group in GAME.foods) {
+				var tx = x + offset / 2 * i + offset + 2,
+					ty = stage.canvas.height - UTILS.padding - offset;
+				var text = new createjs.Text(group[0]);
+				text.x = tx;
+				text.y = ty;
+				text.textBaseline = "bottom";				
+				stage.addChild(text);
+				stage.addChild(GAME.bars[group] = new createjs.Shape(new createjs.Graphics().ss(1).s("#000").f("#f00").r(tx + 1, ty - bar_height - 12, bar_width, bar_height)));
+				i++;
+			}			
+			//TEXT STATS
+			//CALORIES
+			var txtCalories = GAME.txtCalories = new createjs.Text("Calories : x / y");
+			txtCalories.x = x + offset;
+			txtCalories.y = y + height;
+			txtCalories.textBaseline = "top";
+			stage.addChild(txtCalories);
+			//DAY
+			var txtDay = GAME.txtDay = new createjs.Text("Day : x / y");
+			txtDay.x = x + offset;
+			txtDay.y = y + height + 12;
+			txtDay.textBaseline = "top";
+			stage.addChild(txtDay);
+			//MEAL
+			var txtMeal = GAME.txtMeal = new createjs.Text("Meal : Breakfast");
+			txtMeal.x = x + offset;
+			txtMeal.y = y + height + 24;
+			txtMeal.textBaseline = "top";
+			stage.addChild(txtMeal);
 		};
 		
-		GAME.checkPoint(col, row){
-			rv = {};
+		GAME.checkPoint = function(col, row){
+			var rv = {};
 			var og = GAME[col][row].name;
 			if(((col+2) < GAME.length) &&(og == GAME[col+1][row].name == GAME[col+2][row].name)){
 				rv.north = [[col,row], [col+1,row],[col+2,row]]
@@ -98,51 +156,17 @@
 				rv.west = [[col,row], [col,row-1],[col,row-2]];
 			}
 			return rv;
-		}
+		};
 		
-		GAME.moveChecker(){
+		GAME.moveChecker = function(){
 			var matching = [];
-			for (int i = 0; i < GAME.board.length; i++){
-				for(int j = 0; j < GAME.board[j].length; j++){
+			for (var i = 0; i < GAME.board.length; i++){
+				for(var j = 0; j < GAME.board[i].length; j++){
 					matching.push(checkPoint(GAME.board[i][j]));
 				}
 			}
 				
 			return matching;
-		}
-		
-		
-		GAME.populateList = function() {
-			
-			var x = 50*2 * 8 * UTILS.padding;
-			var y = 50;
-			var width = stage.canvas.width-x-padding;
-			var height = UTILS.padding * 5;
-			var list = [];
->>>>>>> ce6d609fec8af8815bef514f0809c20c8791c405
-			stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, width, height)));
-			for(var i = 0; i < GAME.foodForTheWeek.length; i++){
-				var food = GAME.foodForTheWeek[i];
-				var image = new createjs.Bitmap("images/" + food.image);
-				var row = Math.floor(i / 2),
-					col = i % 2;
-				image.scaleY = scale;
-				image.scaleX = scale;
-				image.x = offset + offset * col + x + UTILS.imagesize * scale * col;
-				image.y = offset + offset * row + y + UTILS.imagesize * scale * row;
-				stage.addChild(image);
-			}									
-			y = (UTILS.imagesize * scale * 3) + (offset * 6);
-			width = stage.canvas.width - x - UTILS.padding - offset * 2;
-			height = width;
-			//GENERATE THE IMAGE
-			var image = new createjs.Bitmap("images/avatar.png");
-			image.x = x + offset;
-			image.y = y;
-			stage.addChild(image);
-		};
-		
-		GAME.addCharacter = function() {
 		};
 		
 		GAME.generateGamePiece = function() {
@@ -185,6 +209,8 @@
 		GAME.selectedPiece = false;
 		
 		GAME.processing = false;
+		
+		GAME.bars = {};
 		
 		GAME.switchPiece = function(e) {			
 			if(!GAME.processing) {
