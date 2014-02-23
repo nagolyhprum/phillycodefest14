@@ -95,6 +95,29 @@
 			"Desert"
 		];
 		
+		GAME.createhover = function(x,y,obj){
+			var container = new createjs.Container();
+			container.x = x;
+			container.y = y;
+			container.width = UTILS.textboxwidth;
+			container.height = UTILS.textboxheight;
+			
+			var i = 1;
+			for(var key in obj){
+				var value = obj[key];
+				if(parseFloat(value)){
+					var text = new createjs.Text(key + " : " + value, "8px Arial", "black");					
+					var col = i % 2;
+					text.x = 5 + col * container.width / 2;
+					text.y = text.getMeasuredLineHeight() * (col + 1);
+					container.addChild(text);
+					i++;
+				}
+			}
+			
+			return container;
+		};
+		
 		GAME.updateStatistics = function() {
 			GAME.txtCalories.text = "Cal. : " + GAME.calories + " / " + UTILS.getCaloricIntake(User.height, User.weight, User.gender, User.age);
 			GAME.txtDay.text = "Day : " + GAME.day + " / " + 28;
