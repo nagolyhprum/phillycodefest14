@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "making better food fields"
+git commit -m "supports nutrition data for foods"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->

@@ -96,49 +96,49 @@ VALUES
 	(328, "Vitamin D (D2 + D3)", "mcg"),
 	(334, "Cryptoxanthin, beta", "mcg"),
 	(337, "Lycopene", "mcg"),
-	(338, "Lutein + zeaxanthin", "LUT+ZEA", "mcg"),
+	(338, "Lutein + zeaxanthin", "mcg"),
 	(401, "Vitamin C", "mg"),
 	(404, "Thiamin", "mg"),
 	(405, "Riboflavin", "mg"),
 	(406, "Niacin", "mg"),
-	(415, "Vitamin B-6", "VITB6A", "mg"),
+	(415, "Vitamin B-6", "mg"),
 	(417, "Folate, total", "mcg"),
-	(418, "Vitamin B-12", "VITB12", "mcg"),
+	(418, "Vitamin B-12", "mcg"),
 	(421, "Choline, total", "mg"),
-	(430, "Vitamin K (phylloquinone)", "VITK1", "mcg"),
+	(430, "Vitamin K (phylloquinone)", "mcg"),
 	(431, "Folic acid", "mcg"),
 	(432, "Folate, food", "mcg"),
 	(435, "Folate, DFE", "mcg_DFE"),
-	(573, "Vitamin E, added", " ", "mg"),
-	(578, "Vitamin B-12, added", " ", "mcg"),
+	(573, "Vitamin E, added", "mg"),
+	(578, "Vitamin B-12, added", "mcg"),
 	(601, "Cholesterol", "mg"),
 	(606, "Fatty acids, total saturated", "g"),
-	(607, "4:0", "F4D0", "g"),
-	(608, "6:0", "F6D0", "g"),
-	(609, "8:0", "F8D0", "g"),
-	(610, "10:0", "F10D0", "g"),
-	(611, "12:0", "F12D0", "g"),
-	(612, "14:0", "F14D0", "g"),
-	(613, "16:0", "F16D0", "g"),
-	(614, "18:0", "F18D0", "g"),
-	(617, "18:1", "F18D1", "g"),
-	(618, "18:2", "F18D2", "g"),
-	(619, "18:3", "F18D3", "g"),
-	(620, "20:4", "F20D4", "g"),
-	(621, "22:6 n-3", "F22D6", "g"),
-	(626, "16:1", "F16D1", "g"),
-	(627, "18:4", "F18D4", "g"),
-	(628, "20:1", "F20D1", "g"),
-	(629, "20:5 n-3", "F20D5", "g"),
-	(630, "22:1", "F22D1", "g"),
-	(631, "22:5 n-3", "F22D5", "g"),
+	(607, "4:0", "g"),
+	(608, "6:0", "g"),
+	(609, "8:0", "g"),
+	(610, "10:0", "g"),
+	(611, "12:0", "g"),
+	(612, "14:0", "g"),
+	(613, "16:0", "g"),
+	(614, "18:0", "g"),
+	(617, "18:1", "g"),
+	(618, "18:2", "g"),
+	(619, "18:3", "g"),
+	(620, "20:4", "g"),
+	(621, "22:6 n-3", "g"),
+	(626, "16:1", "g"),
+	(627, "18:4", "g"),
+	(628, "20:1", "g"),
+	(629, "20:5 n-3", "g"),
+	(630, "22:1", "g"),
+	(631, "22:5 n-3", "g"),
 	(645, "Fatty acids, total monounsaturated", "g"),
-	(646, "Fatty acids, total polyunsaturated", "g");
-	(666, "Calories", "cal");
+	(646, "Fatty acids, total polyunsaturated", "g"),
+	(666, "Calories", "");
 
 	
 CREATE TABLE IF NOT EXISTS `nutvaltbl`(
-	`foodid` int(11) NOT NULL PRIMARY KEY,
+	`foodid` int(11) NOT NULL,
 	`nutid` int(11) NOT NULL,
 	`nutvalmeasure` decimal(11,3)
 );
@@ -163,7 +163,8 @@ CREATE TABLE IF NOT EXISTS `usertbl` (
   PRIMARY KEY (`userid`)
 );
 
-INSERT INTO nutvaltbl (foodid, nutid, nutvalmeasure) 
+INSERT INTO 
+	nutvaltbl (foodid, nutid, nutvalmeasure) 
 VALUES 
 	(205745, 666, 73),
 	(206449, 666, 350),
