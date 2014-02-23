@@ -50,8 +50,7 @@
 			shoppingcart.push(value[UTILS.next(value.length)]);
 		}
 		return shoppingcart;
-	};
-		
+	};	
 	
 	(function(){	
 		GAME.init = function() {
@@ -73,6 +72,36 @@
 				GAME.populateList();
 			});
 		};
+		
+		GAME.checkPoint(col, row){
+			rv = {};
+			var og = GAME[col][row].name;
+			if(((col+2) < GAME.length) &&(og == GAME[col+1][row].name == GAME[col+2][row].name)){
+				rv.north = [[col,row], [col+1,row],[col+2,row]]
+			}
+			if(((col-2) >= 0) &&(og == GAME[col-1][row].name == GAME[col-2][row].name)){
+				rv.south = [[col,row], [col-1,row],[col,row]];
+			}
+			if(((row+2) < GAME[col].length) && (og == GAME[col][row+1].name == GAME[col][row+2].name)){
+				rv.east = [[col,row], [col,row+1],[col,row+2]];
+			}
+			if(((row-2) >= 0) && (og == GAME[col][row-1].name == GAME[col][row-2].name)){
+				rv.west = [[col,row], [col,row-1],[col,row-2]];
+			}
+			return rv;
+		}
+		
+		GAME.moveChecker(){
+			var matching = [];
+			for (int i = 0; i < GAME.board.length; i++){
+				for(int j = 0; j < GAME.board[j].length; j++){
+					matching.push(checkPoint(GAME.board[i][j]));
+				}
+			}
+				
+			return matching;
+		}
+		
 		
 		GAME.populateList = function() {
 			
