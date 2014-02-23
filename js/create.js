@@ -243,6 +243,9 @@
 					GAME[last.food.foodgroupname.toLowerCase()]++;					
 				}
 			}
+			if(!is_init) {
+				GAME.updateStatistics();
+			}
 		};
 		
 		GAME.fillColumns = function(success, is_init) {
@@ -350,6 +353,7 @@
 		GAME.selectedPiece = false;
 		
 		GAME.processing = false;
+
 		
 		GAME.bars = {};
 		
@@ -371,6 +375,11 @@
 									GAME.meal = GAME.meal + 1;
 									if(GAME.meal == GAME.meals.length) {
 										//SAVE DAY
+										DB.createDay(GAME.calories, GAME.grain, GAME.protein, GAME.vegetable, GAME.fruit, GAME.junk, GAME.dairy, function(bool) {
+											if(bool) {
+												console.log("GAME OVER");
+											}
+										});
 										GAME.meal = 0;
 										GAME.calories = 0;
 										GAME.grain = 0;

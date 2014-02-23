@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "move faster and updates accurately"
+git commit -m "junk is now written to the database"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->
