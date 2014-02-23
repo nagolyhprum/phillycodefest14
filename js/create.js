@@ -58,7 +58,8 @@
 		var shoppingcart = [];
 		for(var key in GAME.foods){
 			var value = GAME.foods[key];
-			shoppingcart.push(value[UTILS.next(value.length)]);
+			var keys = Object.keys(value);
+			shoppingcart.push(value[keys[UTILS.next(keys.length)]]);
 		}
 		return shoppingcart;
 	};	
@@ -255,7 +256,7 @@
 					}
 				}
 				if(consecutive == 3 && !is_init) {
-					GAME.calories += last.food.calories;
+					GAME.calories += parseInt(last.food.Calories);
 					GAME[last.food.foodgroupname.toLowerCase()]++;					
 				}
 			}
