@@ -5,6 +5,8 @@ var UTILS = window.UTILS || {};
 		return ((weight/(height * height)) * 703);
 	};
 	
+	UTILS.imagesize = 47;
+	
 	UTILS.next = function(max) {
 		return Math.floor(max * Math.random());
 	};

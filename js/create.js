@@ -70,11 +70,32 @@
 				stage.removeAllChildren();
 				gameState = GAME;		
 				GAME.populateBoard();
-				GAME.populateCart();
+				GAME.populateList();
 			});
 		};
 		
-		GAME.populateCart = function() {
+		GAME.populateList = function() {
+			
+			var x = 50*2 * 8 * UTILS.padding;
+			var y = 50;
+			var width = stage.canvas.width-x-padding;
+			var height = UTILS.padding * 5;
+			var list = [];
+			stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, width, height)));
+
+			for(var i = 0; i < foodForTheWeek.length; i++){
+				var food = GAME.foodForTheWeek[i];
+				var scale = (stage.canvas.width-x-padding)/foodForTheWeek.length;
+				var image = new createjs.Bitmap("images/" + food.image);
+				image.scaleY = scale;
+				image.scaleX = scale;
+				image.x = x + (i)*scale;
+				image.y = y;
+				list.push(image);
+				stage.addChild(image);
+			}
+				
+			
 		};
 		
 		GAME.generateGamePiece = function() {
