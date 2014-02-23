@@ -95,23 +95,35 @@
 			"Desert"
 		];
 		
-		GAME.createhover = function(x,y,obj){
+		GAME.createhover = function(name,x,y,obj){
 			var container = new createjs.Container();
 			container.x = x;
 			container.y = y;
 			container.width = UTILS.textboxwidth;
 			container.height = UTILS.textboxheight;
 			
-			var i = 1;
+			container.addChild(new createjs.Shape(new createjs.Graphics().ss(1).f("#aaa").s("#000").r(0, 0, container.width, container.height)));
+			
+			var text = new createjs.Text(name, "8px Arial", "black");					
+			text.x = 0;
+			text.y = 0;
+			text.textBaseline = "top";
+			text.textAlign = "left";
+			container.addChild(text);
+			var i = 0;
 			for(var key in obj){
 				var value = obj[key];
 				if(parseFloat(value)){
-					var text = new createjs.Text(key + " : " + value, "8px Arial", "black");					
-					var col = i % 2;
+					text = new createjs.Text(key + " : " + value, "8px Arial", "black");					
+					var col = i % 2,
+						row = Math.floor(i / 2);
 					text.x = 5 + col * container.width / 2;
-					text.y = text.getMeasuredLineHeight() * (col + 1);
+					text.y = 15 + text.getMeasuredLineHeight() * row;
 					container.addChild(text);
 					i++;
+					if(i >= 8) {
+						break;
+					}
 				}
 			}
 			
@@ -164,17 +176,11 @@
 				image.y = UTILS.offset + UTILS.offset * row + y + UTILS.imagesize * UTILS.scale * row;
 				image.food = food;
 				image.addEventListener("mouseover", function(e) {
-					console.log("over");
-					/*
-					stage.addChild(e.target.hover = GAME.createHover(0, 0, e.target.nutrition));
-					*/
+					stage.addChild(e.target.hover = GAME.createhover(e.target.food.name, e.target.x - UTILS.textboxwidth + UTILS.imagesize, e.target.y + UTILS.imagesize, e.target.food.nutrition));
 				});
 				image.addEventListener("mouseout", function(e) {
-					console.log("out");
-					/*
 					stage.removeChild(e.target.hover);
 					image.hover = null;
-					*/
 				});
 				statistics.addChild(image);
 			}									

@@ -42,7 +42,7 @@ var UTILS = window.UTILS || {};
 	
 	UTILS.barheight = 40
 	
-	UTILS.textboxwidth = 50;
+	UTILS.textboxwidth = 300;
 	UTILS.textboxheight = 50;
 	
 	UTILS.getCaloricIntake = function(height, weight, gender, age){
