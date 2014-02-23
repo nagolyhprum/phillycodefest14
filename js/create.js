@@ -74,6 +74,7 @@
 				gameState = GAME;		
 				GAME.populateBoard();
 				GAME.addStatistics();
+				GAME.process(GAME.moveChecker(), true); //prevent inital matches
 			});
 		};
 		
@@ -243,14 +244,14 @@
 			}
 		};
 		
-		GAME.fillColumns = function(success) {
+		GAME.fillColumns = function(success, is_init) {
 			var synch = UTILS.synch(8, success);
 			for(var col = 0; col < 8; col++) {
-				GAME.fillColumn(col, synch);
+				GAME.fillColumn(col, synch, is_init);
 			}
 		};
 		
-		GAME.fillColumn = function(col, success) {
+		GAME.fillColumn = function(col, success, is_init) {
 			var empty;
 			for(var row = 7; row >= 0; row--) {
 				var o = GAME.board[row][col];
@@ -261,17 +262,21 @@
 					o.data.row = empty.row;
 					GAME.board[empty.row][empty.col] = GAME.board[row][col];
 					GAME.board[row][col] = null;
-					
-					var action = createjs.Tween.get(obj);
-					action.to({
-						y : UTILS.padding + empty.row * UTILS.imagesize
-					}, 1000);
-					action.on("change", function() {
-						image.y = Math.floor(obj.y);
-					});
-					action.call(function() {
-						GAME.fillColumn(col, success);
-					});
+					if(!is_init) {
+						var action = createjs.Tween.get(obj);
+						action.to({
+							y : UTILS.padding + empty.row * UTILS.imagesize
+						}, 1000);
+						action.on("change", function() {
+							image.y = Math.floor(obj.y);
+						});
+						action.call(function() {
+							GAME.fillColumn(col, success, is_init);
+						});
+					} else {
+						image.y = UTILS.padding + empty.row * UTILS.imagesize;
+						GAME.fillColumn(col, success, is_init);
+					}
 					return;
 				}
 				if(!o && !empty) { //if i havent seen an empty and i am looking at one now
@@ -284,16 +289,21 @@
 			if(empty) { //if there are empty cells and i need to generate new foods												
 				var image = GAME.generateFoodForGrid(col * UTILS.imagesize + UTILS.padding, 0, empty.row, col, false);
 				var obj = {y:image.y};
-				var action = createjs.Tween.get(obj);
-				action.to({
-					y : UTILS.padding + empty.row * UTILS.imagesize
-				}, 1000);
-				action.on("change", function() {
-					image.y = Math.floor(obj.y);
-				});
-				action.call(function() {
-					GAME.fillColumn(col, success);
-				});
+				if(!is_init) {
+					var action = createjs.Tween.get(obj);
+					action.to({
+						y : UTILS.padding + empty.row * UTILS.imagesize
+					}, 1000);
+					action.on("change", function() {
+						image.y = Math.floor(obj.y);
+					});
+					action.call(function() {
+						GAME.fillColumn(col, success, is_init);
+					});
+				} else {
+					image.y = UTILS.padding + empty.row * UTILS.imagesize;
+					GAME.fillColumn(col, success, is_init);
+				}
 			} else {
 				success();
 			}
@@ -357,10 +367,12 @@
 							var toBreak = GAME.moveChecker();
 							if(toBreak.length) {							
 								GAME.meal = GAME.meal + 1;
-								if(GAME.meal > GAME.meals.length) {
-									//MAKE A DAY
+								if(GAME.meal == GAME.meals.length) {
+									GAME.meal = 0;
+									GAME.day++;
+									//MAKE A DAY AND RESET OTHER DATA
 								}
-								GAME.process(toBreak);
+								GAME.process(toBreak, false);
 							} else {
 								var synch = UTILS.synch(2, function() {
 									GAME.processing = false;
@@ -388,12 +400,12 @@
 			}
 		};
 		
-		GAME.process = function(toBreak) {
+		GAME.process = function(toBreak, is_init) {
 			if(toBreak.length) {
-				GAME.doBreak(toBreak);
+				GAME.doBreak(toBreak, is_init);
 				GAME.fillColumns(function() {
-					GAME.process(GAME.moveChecker());
-				});
+					GAME.process(GAME.moveChecker(), is_init);
+				}, is_init);
 			} else {
 				console.log("all done");
 				GAME.processing = false;

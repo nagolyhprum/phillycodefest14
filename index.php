@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "now generating foods"
+git commit -m "game now starts without matches"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->
