@@ -1,15 +1,36 @@
 (function(){
-	var User = {};
+	var User = {};	
 	
-	DB.loadUser(function(user) {
-		if(user.result === null) {
-			DB.createUser(70, 130, UTILS.man, 22, function(user) {
-				User = user;
+	var LOGIN = window.LOGIN || {};
+	
+	(function() {
+		var signup = $("#signup");
+		LOGIN.init = function() {
+			stage.removeAllChildren();
+			DB.loadUser(function(user) {
+				if(user.result === null) {
+					var child = new createjs.DOMElement(signup[0]);
+					gameState = LOGIN;
+					stage.addChild(child);					
+					signup.find("#action").click(function() {
+						var name = signup.find("#name").val();
+						var weight = signup.find("#weight").val();
+						var height = signup.find("#height").val();
+						var gender = signup.find("#gender").val();
+						var age = signup.find("#age").val();
+						DB.createUser(name, height, weight, gender, age, function(user) {
+							User = user;
+							signup.hide();
+							MAIN.init();
+						});
+					});
+				} else {
+						User = user;
+						MAIN.init();
+				}
 			});
-		} else {
-			User = user;
-		}
-	});
+		};
+	}());
 
 	var MAIN = window.MAIN || {};
 	
@@ -22,10 +43,6 @@
 			drawButton(UTILS.padding, stage.canvas.height / 2 - height * 1.5 - UTILS.padding * 2, height, width, GAME, "Start");
 			drawButton(UTILS.padding,stage.canvas.height/2-height/2,height,width,FOOD, "Food");
 			drawButton(UTILS.padding,stage.canvas.height/2+height/2+UTILS.padding*2,height,width,HELP, "Help");
-		};
-		
-		MAIN.update = function(){
-		
 		};
 	}());
 	
@@ -346,9 +363,6 @@
 			return image;
 		};
 		
-		GAME.update = function(){
-		};
-		
 		GAME.selectedPiece = false;
 		
 		GAME.processing = false;
@@ -465,12 +479,7 @@
 			text.x = 20;
 			text.y = 20;
 			stage.addChild(text);
-		};
-		
-		FOOD.update = function(){
-			
-		};
-		
+		};		
 	}());
 	
 	var HELP = window.HELP || {};
@@ -521,10 +530,9 @@
 		stage.addChild(text);
 	}
 	
-	MAIN.init();
+	LOGIN.init();
 	
 	createjs.Ticker.addEventListener("tick", function(){
-		gameState.update();
 		stage.update();
 	});
 }());

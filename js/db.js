@@ -2,11 +2,12 @@ var DB = window.DB || {};
 
 (function() {
 	//Creates a user in DB
-	DB.createUser = function(h, w, g, a, success){
+	DB.createUser = function(n, h, w, g, a, success){
 		$.ajax({
 			url : "php/createuser.php",
 			dataType : "json",
 			data : {
+				name : n,
 				height : h,
 				weight : w,
 				gender : g,
@@ -20,7 +21,7 @@ var DB = window.DB || {};
 	};
 	
 	DB.loadUser = function(success) {
-		DB.createUser("", "", "", "", success);
+		DB.createUser("", "", "", "", "", success);
 	};
 	
 	//creates a day in DB

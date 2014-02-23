@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS `daytbl` (
 CREATE TABLE IF NOT EXISTS `foodgrouptbl` (
   `foodgroupid` int(11) NOT NULL AUTO_INCREMENT,
   `foodgroupname` varchar(32) NOT NULL,
-  `foodgroupsymbol` varchar(1) NOT NULL,
   PRIMARY KEY (`foodgroupid`)
 );
 
@@ -39,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `foodtbl` (
   `foodimage` VARCHAR(32) NOT NULL
 );
 
-INSERT INTO `foodtbl` (`foodgroupid`, `foodname`, `foodimage`, `foodcalories`) VALUES
+INSERT INTO `foodtbl` (`foodgroupid`, `foodname`, `foodimage`) VALUES
 	(1, "Grape", "fruit_a.png"),
 	(1, "Apple", "fruit_b.png"),
 	(1, "Pineapple", "fruit_c.png"),
@@ -73,5 +72,6 @@ CREATE TABLE IF NOT EXISTS `usertbl` (
   `usergender` int(1) NOT NULL,
   `userage` int(3) NOT NULL,
   `userfbid` int(11) NOT NULL,
+  `username` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`userid`)
 );
