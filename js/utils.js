@@ -42,6 +42,9 @@ var UTILS = window.UTILS || {};
 	
 	UTILS.barheight = 40
 	
+	UTILS.textboxwidth = 50;
+	UTILS.textboxheight = 50;
+	
 	UTILS.getCaloricIntake = function(height, weight, gender, age){
 		if(gender == UTILS.man){
 			return Math.floor(66 + (13.7 * weight) + (5 * height) - (6.8 * age));
