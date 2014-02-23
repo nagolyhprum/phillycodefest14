@@ -239,10 +239,6 @@
 				}
 			}
 			if(!is_init) {
-				GAME.meal = GAME.meal + 1;
-				if(GAME.meal > GAME.meals.length) {
-					//MAKE A DAY
-				}
 				GAME.updateStatistics();
 			}
 		};
@@ -259,12 +255,14 @@
 			for(var row = 7; row >= 0; row--) {
 				var o = GAME.board[row][col];
 				if(o && empty) { //if i am looking at an object and know where to put it
-					//var image = GAME.generateFoodForGrid(col * UTILS.imagesize + UTILS.padding, 0, empty.row, col);
 					var obj = {y:o.image.y};
 					var image = o.image;
-					var action = createjs.Tween.get(obj);
+					o.data.column = empty.col;
+					o.data.row = empty.row;
 					GAME.board[empty.row][empty.col] = GAME.board[row][col];
 					GAME.board[row][col] = null;
+					
+					var action = createjs.Tween.get(obj);
 					action.to({
 						y : UTILS.padding + empty.row * UTILS.imagesize
 					}, 1000);
@@ -283,8 +281,19 @@
 					};
 				}
 			}	
-			if(empty) { //if there are empty cells and i need to generate new foods
-				
+			if(empty) { //if there are empty cells and i need to generate new foods												
+				var image = GAME.generateFoodForGrid(col * UTILS.imagesize + UTILS.padding, 0, empty.row, col, false);
+				var obj = {y:image.y};
+				var action = createjs.Tween.get(obj);
+				action.to({
+					y : UTILS.padding + empty.row * UTILS.imagesize
+				}, 1000);
+				action.on("change", function() {
+					image.y = Math.floor(obj.y);
+				});
+				action.call(function() {
+					GAME.fillColumn(col, success);
+				});
 			} else {
 				success();
 			}
@@ -299,12 +308,12 @@
 				GAME.board[rows] = [];
 				for(var columns = 0; columns < 8; columns++) {
 					var x = columns * UTILS.imagesize + UTILS.padding, y = rows * UTILS.imagesize + UTILS.padding;
-					GAME.generateFoodForGrid(x, y, rows, columns);
+					GAME.generateFoodForGrid(x, y, rows, columns, true);
 				}
 			}		
 		};
 		
-		GAME.generateFoodForGrid = function(x, y, row, column) {
+		GAME.generateFoodForGrid = function(x, y, row, column, makebox) {
 			var food = GAME.generateGamePiece();
 			var image = new createjs.Bitmap("images/" + food.image);
 			image.addEventListener("click", GAME.switchPiece);
@@ -319,7 +328,7 @@
 				food : food,
 				data : image.data
 			};
-			stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, UTILS.imagesize, UTILS.imagesize)));
+			makebox && stage.addChild(new createjs.Shape(new createjs.Graphics().ss(1).s("#000").r(x, y, UTILS.imagesize, UTILS.imagesize)));
 			stage.addChild(image);			
 			return image;
 		};
@@ -346,7 +355,11 @@
 							GAME.board[original.data.row][original.data.column] = original;
 							GAME.board[clicked.data.row][clicked.data.column] = clicked;
 							var toBreak = GAME.moveChecker();
-							if(toBreak.length) {
+							if(toBreak.length) {							
+								GAME.meal = GAME.meal + 1;
+								if(GAME.meal > GAME.meals.length) {
+									//MAKE A DAY
+								}
 								GAME.process(toBreak);
 							} else {
 								var synch = UTILS.synch(2, function() {
@@ -370,6 +383,8 @@
 				} else {
 					GAME.selectedPiece = clicked;
 				}
+			} else {
+				console.log("I am processing.");
 			}
 		};
 		
