@@ -256,7 +256,7 @@
 					}
 				}
 				if(consecutive == 3 && !is_init) {
-					GAME.calories += parseInt(last.food.Calories);
+					GAME.calories += parseInt(last.food.nutrition.Calories);
 					GAME[last.food.foodgroupname.toLowerCase()]++;					
 				}
 			}

@@ -29,7 +29,7 @@ WHERE
 			"image" => $foodimage,
 			"foodgroupname" => $foodgroupname
 		);
-		$array[$foodgroupname][$foodname][$nutname] = "$nutmeasure$nutvalmeasure";
+		$array[$foodgroupname][$foodname]["nutrition"][$nutname] = "$nutmeasure$nutvalmeasure";
 	}
 	mysqli_stmt_close($stmt);
 	echo json_encode($array);
