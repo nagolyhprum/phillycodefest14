@@ -69,6 +69,15 @@
 			
 		};
 		
+		GAME.shopping = function(){
+			var shoppingcart = [];
+			for(var key in GAME.foods){
+				var value = GAME.foods[key];
+				shoppingcart.push(value[Math.floor(Math.random()*value.length)]);
+			}
+			return shoppingcart;
+		}
+		
 	}());
 	
 	var FOOD = window.FOOD || {};
