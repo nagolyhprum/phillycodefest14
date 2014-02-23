@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "organized data sets"
+git commit -m "fixed a game creation bug"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->

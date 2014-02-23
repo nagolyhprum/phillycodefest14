@@ -20,7 +20,7 @@
 	mysqli_stmt_fetch($stmt);
 	mysqli_stmt_close($stmt);
 		
-	if($daysPlayed >= $gameweeks || !$gameid) {
+	if($daysPlayed >= $gameweeks * 7 || !$gameid) {
 		$sql = "INSERT INTO `gametbl` (`userid`, `gameweeks`) VALUES (?, ?)";
 		$stmt = mysqli_prepare($conn, $sql);
 		echo mysqli_error($conn);

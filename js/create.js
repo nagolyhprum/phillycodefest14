@@ -1,15 +1,14 @@
 (function(){
 	var User = {};
 	
-	DB.createUser(70, 130, UTILS.man, 22, function(user) {
-		if(user.result === true) {
-			alert("Thank you for creating your new account.");
-		} else if(user.result === false) {
-			alert("Thank you for reusing your account.");
-		} else if(user.result === null){			
-			alert("Uh oh, could not create an account.");
+	DB.loadUser(function(user) {
+		if(user.result === null) {
+			DB.createUser(70, 130, UTILS.man, 22, function(user) {
+				User = user;
+			});
+		} else {
+			User = user;
 		}
-		User = user;
 	});
 
 	var MAIN = window.MAIN || {};

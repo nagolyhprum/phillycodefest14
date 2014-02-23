@@ -17,7 +17,11 @@ var DB = window.DB || {};
 				success(bool);
 			}
 		});
-	}
+	};
+	
+	DB.loadUser = function(success) {
+		DB.createUser("", "", "", "", success);
+	};
 	
 	//creates a day in DB
 	DB.createDay = function(calories, grains, protein, vegetables, fruit, junk, dairy, success){
