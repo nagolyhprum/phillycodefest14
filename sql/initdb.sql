@@ -25,9 +25,9 @@ CREATE TABLE IF NOT EXISTS `foodgrouptbl` (
 );
 
 INSERT INTO `foodgrouptbl` (`foodgroupid`, `foodgroupname`) VALUES
-	(1, 'Fruits'),
-	(2, 'Vegtables'),
-	(3, 'Grains'),
+	(1, 'Fruit'),
+	(2, 'Vegetable'),
+	(3, 'Grain'),
 	(4, 'Dairy'),
 	(5, 'Protein'),
 	(6, 'Junk');

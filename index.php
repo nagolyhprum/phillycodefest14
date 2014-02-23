@@ -1,6 +1,6 @@
 <!--
 git add -A
-git commit -m "can create daily intake"
+git commit -m "making grid"
 git pull https://github.com/nagolyhprum/phillycodefest14.git
 git push https://github.com/nagolyhprum/phillycodefest14.git
 -->
