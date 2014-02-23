@@ -50,7 +50,7 @@ var DB = window.DB || {};
 		$.ajax({
 			url: "php/creategame.php",
 			type: "POST",
-			dataTye : "json",
+			dataType : "json",
 			data : {
 				weeks : w
 			},
@@ -63,6 +63,7 @@ var DB = window.DB || {};
 	//creates game in DB
 	DB.getFoods = function(complete) {
 		$.ajax({
+			dataType : "json",
 			url: "php/getFoods.php",
 			type: "POST",
 			dataType : "json",
